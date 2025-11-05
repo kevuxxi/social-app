@@ -1,0 +1,41 @@
+@use "./styles/base/reset";
+@use "./styles/base/themes";
+@use "./styles/base/variables" as v;
+@use "./styles/base/mixins" as m;
+
+html,
+#root {
+    height: 100%;
+    background: #040a17;
+    width: 100%;
+}
+
+
+body {
+    font-family: v.$font-family-base;
+    background: #040a17;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    transition: background v.$transition-base, color v.$transition-base;
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+.app-shell {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+}
