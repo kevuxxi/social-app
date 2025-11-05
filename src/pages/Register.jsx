@@ -1,7 +1,15 @@
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { registerRequest } from "../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Register = () => {
+    const { user, token, loading, error } = useSelector((state) => state.auth)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -9,8 +17,23 @@ const Register = () => {
 
     const handlesubmit = (e) => {
         e.preventDefault();
-
+        dispatch(registerRequest({ username, email, password }))
+        setEmail('')
+        setPassword('')
+        setUsername('')
     }
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (token) {
+            navigate("/profile");
+        }
+    }, [token, navigate]);
 
     return (
         <Container className="page register-page">
@@ -18,7 +41,7 @@ const Register = () => {
                 <Col xs={12} md={6} lg={4}>
                     <Card className="register-card">
                         <h1 className="register-card__title">Formulario de Registro</h1>
-                        <Form>
+                        <Form onSubmit={handlesubmit}>
                             <Form.Group className="mb-3" controlId="formBasicUsername">
                                 <Form.Label>Username</Form.Label>
                                 <Form.Control onChange={(e) => setUsername(e.target.value)} value={username} type="text" placeholder="Tu nombre de usuario" />
@@ -34,7 +57,10 @@ const Register = () => {
                                 <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Mínimo 8 caracteres" />
                             </Form.Group>
                             <Button variant="primary" type="submit" size="lg" className="w-100" >
-                                Registrarse
+                                {loading
+                                    ? "Registrando..."
+                                    : "Registrarse"
+                                }
                             </Button>
                         </Form>
                     </Card>
