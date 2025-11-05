@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 
 const Login = () => {
-    const { token, loading, error } = useSelector((state) => state.auth)
+    const { user, token, loading, error } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -60,9 +60,10 @@ const Login = () => {
 
     useEffect(() => {
         if (token) {
+            toast.success(`Bienvenido de nuevo, ${user?.name ?? user?.email ?? 'usuario'}!`);
             navigate("/profile");
         }
-    }, [token, navigate]);
+    }, [token, navigate, user]);
 
     return (
 
