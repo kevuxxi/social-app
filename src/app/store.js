@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from 'redux-saga'
+import rootSaga from "./rootSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -11,4 +12,4 @@ export const store = configureStore({
         getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
 })
 
-sagaMiddleware.run()
+sagaMiddleware.run(rootSaga)
