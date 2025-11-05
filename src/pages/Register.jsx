@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerRequest } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 const Register = () => {
-    const { user, token, loading, error } = useSelector((state) => state.auth)
+    const { token, loading, error } = useSelector((state) => state.auth)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -56,9 +57,12 @@ const Register = () => {
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Mínimo 8 caracteres" />
                             </Form.Group>
-                            <Button variant="primary" type="submit" size="lg" className="w-100" >
+                            <Button variant="primary" type="submit" size="lg" className="w-100" disabled={loading}>
                                 {loading
-                                    ? "Registrando..."
+                                    ? <ClipLoader
+                                        color="#FFFFFF" // Usa un color que contraste con el primario (azul)
+                                        size={20}
+                                    />
                                     : "Registrarse"
                                 }
                             </Button>
