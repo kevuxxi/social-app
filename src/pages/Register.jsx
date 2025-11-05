@@ -14,10 +14,44 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [errors, setErrors] = useState('');
 
+    const validate = () => {
+        const newErrors = {};
+
+        // 1. Validación de campos obligatorios
+        if (!username.trim()) {
+            newErrors.username = 'El nombre de usuario es obligatorio.';
+        }
+        if (!email.trim()) {
+            newErrors.email = 'El campo email es obligatorio.';
+        }
+        if (!password) {
+            newErrors.password = 'El campo contraseña es obligatorio.';
+        }
+
+        // 2. Validación de formato de Email (Regex simple)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email.trim() && !emailRegex.test(email)) {
+            newErrors.email = 'El formato del email no es válido.';
+        }
+
+        // 3. Validación de longitud de Contraseña
+        if (password.length > 0 && password.length < 8) {
+            newErrors.password = 'La contraseña debe tener al menos 8 caracteres.';
+        }
+
+        setErrors(newErrors);
+        // Devuelve true si no hay errores (el objeto está vacío)
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handlesubmit = (e) => {
         e.preventDefault();
+
+        if (!validate()) {
+            return;
+        }
         dispatch(registerRequest({ username, email, password }))
         setEmail('')
         setPassword('')
@@ -45,17 +79,26 @@ const Register = () => {
                         <Form onSubmit={handlesubmit}>
                             <Form.Group className="mb-3" controlId="formBasicUsername">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control onChange={(e) => setUsername(e.target.value)} value={username} type="text" placeholder="Tu nombre de usuario" />
+                                <Form.Control onChange={(e) => setUsername(e.target.value)} value={username} type="text" placeholder="Tu nombre de usuario" isInvalid={!!errors.username} />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.username}
+                                </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
-                                <Form.Control onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="email@ejemplo.com" />
+                                <Form.Control onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="email@ejemplo.com" isInvalid={!!errors.email} />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.email}
+                                </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Mínimo 8 caracteres" />
+                                <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Mínimo 8 caracteres" isInvalid={!!errors.password} />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Button variant="primary" type="submit" size="lg" className="w-100" disabled={loading}>
                                 {loading
