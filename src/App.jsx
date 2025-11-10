@@ -5,7 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-toastify/dist/ReactToastify.css";
 import Register from './pages/Register';
 import Login from './pages/Login';
-import PrivateRoute from './components/PrivateRoute';
+/* import PrivateRoute from './components/PrivateRoute'; */
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -20,9 +21,9 @@ function App() {
               <Route path='/register' element={<Register />} />
 
               <Route path='/profile' element={
-                <PrivateRoute>
-                  <h1>profile</h1>
-                </PrivateRoute>} />
+                /*    <PrivateRoute> */
+                <Profile />
+                /* </PrivateRoute> */} />
             </Routes>
           </main>
         </div>
