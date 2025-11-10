@@ -31,10 +31,28 @@ function* handleRegister(action) {
         const response = yield call(action.payload);
         const { token, user } = response?.data ?? {};
 
+        if (token) {
+            localStorage.setItem("token", token);
+        }
+        if (user) {
+            localStorage.setItem("user", JSON.stringify(user));
+        }
         yield put(registerSuccess({ token, user }));
     } catch (error) {
         yield put(registerFailure(error.message || "Respuesta inválida del servidor"));
     }
+}
+
+function* handleLogout() {
+    // 1. Efecto Secundario: Limpia localStorage
+    yield call([localStorage, 'removeItem'], "token");
+    yield call([localStorage, 'removeItem'], "user");
+    // Nota: El reducer de logout ya se encarga de limpiar el estado de Redux.
+}
+
+// Nuevo watcher
+export function* watchLogout() {
+    yield takeLatest('auth/logout', handleLogout); // o simplemente logout.type
 }
 
 export function* watchLogin() {
@@ -46,5 +64,5 @@ export function* watchRegister() {
 }
 
 export default function* authSaga() {
-    yield all([fork(watchLogin), fork(watchRegister)]);
+    yield all([fork(watchLogin), fork(watchRegister), fork(watchLogout)]);
 }

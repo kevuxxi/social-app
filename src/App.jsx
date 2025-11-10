@@ -4,6 +4,8 @@ import './main.scss'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-toastify/dist/ReactToastify.css";
 import Register from './pages/Register';
+import Login from './pages/Login';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
 
@@ -14,9 +16,13 @@ function App() {
           <main className="app-main">
             <Routes>
               <Route path='/' element={<h1>Home</h1>} />
-              <Route path='/login' element={<h1>Login</h1>} />
+              <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
-              <Route path='/profile' element={<h1>profile</h1>} />
+
+              <Route path='/profile' element={
+                <PrivateRoute>
+                  <h1>profile</h1>
+                </PrivateRoute>} />
             </Routes>
           </main>
         </div>
