@@ -1,0 +1,230 @@
+@use "./styles/base/reset";
+@use "./styles/base/themes";
+@use "./styles/base/variables" as v;
+@use "./styles/base/mixins" as m;
+
+html,
+#root {
+    height: 100%;
+    background: #040a17;
+    width: 100%;
+}
+
+
+body {
+    font-family: v.$font-family-base;
+    background: #040a17;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    transition: background v.$transition-base, color v.$transition-base;
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+.app-shell {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+}
+
+.page {
+    width: v.$container-width;
+    background: var(--color-surface);
+    border-radius: v.$radius-lg;
+    box-shadow: v.$shadow-md;
+    border: 1px solid var(--color-border);
+    padding: clamp(2rem, 5vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    transition: background v.$transition-base, box-shadow v.$transition-base, border-color v.$transition-base, color v.$transition-base;
+}
+
+
+
+.auth-page {
+    align-self: center;
+    justify-content: center;
+    align-items: stretch;
+    text-align: left;
+
+    .auth-card {
+        width: min(480px, 100%);
+        border-radius: v.$radius-lg;
+        border: 1px solid var(--color-border);
+        box-shadow: v.$shadow-lg;
+        background: var(--color-surface);
+        padding: clamp(2.5rem, 6vw, 3.5rem);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        &__title {
+            font-family: v.$font-family-heading;
+            text-align: center;
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /*   &__subtitle {
+            color: var(--color-text-secondary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        &__toggle {
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+        } */
+    }
+}
+
+.register-page {
+    align-self: center;
+    justify-content: center;
+    align-items: stretch;
+    text-align: left;
+
+    .register-card {
+        width: min(480px, 100%);
+        border-radius: v.$radius-lg;
+        border: 1px solid var(--color-border);
+        box-shadow: v.$shadow-lg;
+        background: var(--color-surface);
+        padding: clamp(2.5rem, 6vw, 3.5rem);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        &__title {
+            font-family: v.$font-family-heading;
+            text-align: center;
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /*    &__subtitle {
+            color: var(--color-text-secondary);
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        &__toggle {
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+        } */
+    }
+}
+
+// Profile Page Styles
+.profile-page {
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+
+    .profile-card {
+        width: min(480px, 100%);
+        border-radius: v.$radius-lg;
+        border: 1px solid var(--color-border);
+        box-shadow: v.$shadow-lg;
+        background: var(--color-surface);
+        padding: clamp(2.5rem, 6vw, 3.5rem);
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        &__header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        &__avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--bs-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: v.$shadow-md;
+        }
+
+        &__avatar-text {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        &__title {
+            font-family: v.$font-family-heading;
+            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        &__badge {
+            font-size: 0.875rem;
+            padding: 0.35rem 0.75rem;
+            font-weight: 500;
+        }
+
+        &__info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        &__info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        &__info-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        &__info-value {
+            font-size: 1rem;
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        &__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+    }
+}
