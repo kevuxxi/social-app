@@ -3,6 +3,7 @@ import {
     loginFailure,
     loginRequest,
     loginSuccess,
+    logout,
     registerFailure,
     registerRequest,
     registerSuccess,
@@ -51,7 +52,7 @@ function* handleLogout() {
 
 // Nuevo watcher
 export function* watchLogout() {
-    yield takeLatest('auth/logout', handleLogout);
+    yield takeLatest(logout.type, handleLogout);
 }
 
 export function* watchLogin() {

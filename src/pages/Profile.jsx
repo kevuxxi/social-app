@@ -6,6 +6,7 @@ import { logout } from '../redux/slices/authSlice';
 import { useEffect } from 'react';
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { FiLogOut } from 'react-icons/fi';
 import { fetchUserRequest } from '../redux/slices/usersSlice';
 import { Navigate } from "react-router-dom";
 
@@ -42,9 +43,9 @@ const Profile = () => {
         return <Navigate to="/login" replace />
     }
 
-
     const handleLogout = () => {
         dispatch(logout());
+        toast.success('Sesión cerrada correctamente')
         navigate('/login');
     };
 
@@ -90,13 +91,15 @@ const Profile = () => {
                     {/* Botones de acción */}
                     <div className="profile-card__actions">
                         <Button
-                            variant="danger"
+                            variant="outline-danger"
                             size="lg"
-                            className="w-100"
+                            className="w-100 d-flex align-items-center justify-content-center gap-2 profile-card__logout-btn"
                             onClick={handleLogout}
                         >
-                            Cerrar Sesión
+                            <FiLogOut size={18} />
+                            Cerrar sesión
                         </Button>
+
                     </div>
                 </div>)}
         </Container>
