@@ -5,15 +5,17 @@ import { loginRequest } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { fetchUserRequest } from "../redux/slices/usersSlice";
 
 const Login = () => {
     const { user, token, loading, error } = useSelector((state) => state.auth)
+    const authUserId = useSelector((state) => state.auth.user?.id);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState('');
+    const [errors, setErrors] = useState({});
 
     const validate = () => {
         const newErrors = {};
@@ -59,11 +61,16 @@ const Login = () => {
     }, [error]);
 
     useEffect(() => {
+        if (!token || !authUserId) return;
+
         if (token) {
             toast.success(`Bienvenido de nuevo, ${user?.name ?? user?.email ?? 'usuario'}!`);
+            dispatch(fetchUserRequest(authUserId))
             navigate("/profile");
         }
-    }, [token, navigate, user]);
+    }, [token, navigate, user, dispatch, authUserId]);
+
+
 
     return (
 

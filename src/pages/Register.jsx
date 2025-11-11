@@ -14,7 +14,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState('');
+    const [errors, setErrors] = useState({});
 
     const validate = () => {
         const newErrors = {};
