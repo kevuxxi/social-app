@@ -3,15 +3,17 @@ import {
     loginFailure,
     loginRequest,
     loginSuccess,
+    logout,
     registerFailure,
     registerRequest,
     registerSuccess,
 } from "../slices/authSlice";
+import { registerUser, loginUser } from "../../api/authService";
 
 
 function* handleLogin(action) {
     try {
-        const response = yield call(action.payload);
+        const response = yield call(loginUser, action.payload);
         const { token, user } = response?.data ?? {}
         yield put(loginSuccess({ token, user }))
 
@@ -28,7 +30,7 @@ function* handleLogin(action) {
 
 function* handleRegister(action) {
     try {
-        const response = yield call(action.payload);
+        const response = yield call(registerUser, action.payload);
         const { token, user } = response?.data ?? {};
 
         if (token) {
@@ -44,15 +46,13 @@ function* handleRegister(action) {
 }
 
 function* handleLogout() {
-    // 1. Efecto Secundario: Limpia localStorage
     yield call([localStorage, 'removeItem'], "token");
     yield call([localStorage, 'removeItem'], "user");
-    // Nota: El reducer de logout ya se encarga de limpiar el estado de Redux.
 }
 
 // Nuevo watcher
 export function* watchLogout() {
-    yield takeLatest('auth/logout', handleLogout); // o simplemente logout.type
+    yield takeLatest(logout.type, handleLogout);
 }
 
 export function* watchLogin() {
