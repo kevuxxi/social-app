@@ -50,8 +50,6 @@ const Register = () => {
             return;
         }
         dispatch(registerRequest({ user_name: username, email, password }))
-        toast.success('Usuario resgistrado correctamente')
-        navigate("/profile");
         setEmail('')
         setPassword('')
         setUsername('')
@@ -62,6 +60,13 @@ const Register = () => {
             toast.error(error);
         }
     }, [error]);
+
+    useEffect(() => {
+        if (token) {
+            toast.success('Usuario resgistrado')
+            navigate("/profile");
+        }
+    }, [token, navigate]);
 
     return (
         <Container className="page register-page">
