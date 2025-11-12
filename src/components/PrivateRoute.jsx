@@ -1,4 +1,4 @@
-/* import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
@@ -11,4 +11,4 @@ const PrivateRoute = ({ children }) => {
     return children;
 };
 
-export default PrivateRoute; */
+export default PrivateRoute;

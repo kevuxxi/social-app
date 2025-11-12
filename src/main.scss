@@ -6,15 +6,18 @@
 html,
 #root {
     height: 100%;
-    background: #040a17;
     width: 100%;
+    background: #020617;
 }
 
 
 body {
+    min-height: 100%;
     font-family: v.$font-family-base;
-    background: #040a17;
-    color: var(--color-text-primary);
+    background: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.2), transparent 55%),
+        radial-gradient(circle at 85% 10%, rgba(236, 72, 153, 0.18), transparent 60%),
+        #020617;
+    color: #e2e8f0;
     line-height: 1.6;
     transition: background v.$transition-base, color v.$transition-base;
 }
@@ -29,6 +32,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: linear-gradient(180deg, rgba(2, 6, 23, 1), rgba(2, 6, 23, 0.92) 40%, rgba(5, 8, 20, 0.85));
 }
 
 .app-main {
@@ -42,179 +46,483 @@ body {
 
 .page {
     width: v.$container-width;
-    background: var(--color-surface);
     border-radius: v.$radius-lg;
-    box-shadow: v.$shadow-md;
-    border: 1px solid var(--color-border);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: linear-gradient(175deg, rgba(10, 14, 30, 0.95), rgba(3, 6, 17, 0.92));
+    box-shadow: 0 40px 90px rgba(3, 7, 18, 0.65);
     padding: clamp(2rem, 5vw, 3rem);
     display: flex;
     flex-direction: column;
     gap: clamp(1.5rem, 4vw, 2.5rem);
-    transition: background v.$transition-base, box-shadow v.$transition-base, border-color v.$transition-base, color v.$transition-base;
-}
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow v.$transition-base, border-color v.$transition-base, background v.$transition-base;
 
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle at 30% 0%, rgba(99, 102, 241, 0.25), transparent 55%),
+            radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.18), transparent 60%);
+        opacity: 0.4;
+        pointer-events: none;
+    }
 
-
-.auth-page {
-    align-self: center;
-    justify-content: center;
-    align-items: stretch;
-    text-align: left;
-
-    .auth-card {
-        width: min(480px, 100%);
-        border-radius: v.$radius-lg;
-        border: 1px solid var(--color-border);
-        box-shadow: v.$shadow-lg;
-        background: var(--color-surface);
-        padding: clamp(2.5rem, 6vw, 3.5rem);
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-
-        &__title {
-            font-family: v.$font-family-heading;
-            text-align: center;
-            font-size: clamp(1.6rem, 3vw, 2rem);
-            font-weight: 600;
-            color: var(--color-text-primary);
-        }
-
-        /*   &__subtitle {
-            color: var(--color-text-secondary);
-            text-align: center;
-            margin-bottom: 0.5rem;
-        }
-
-        &__toggle {
-            width: max-content;
-            margin-left: auto;
-            margin-right: auto;
-        } */
+    & > * {
+        position: relative;
+        z-index: 1;
     }
 }
 
-.register-page {
-    align-self: center;
-    justify-content: center;
-    align-items: stretch;
-    text-align: left;
 
+
+.auth-page,
+.register-page {
+    width: 100%;
+    max-width: none;
+    align-self: stretch;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+
+    &::before {
+        display: none;
+    }
+
+    .row {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .auth-card,
     .register-card {
-        width: min(480px, 100%);
+        width: min(500px, 100%);
         border-radius: v.$radius-lg;
-        border: 1px solid var(--color-border);
-        box-shadow: v.$shadow-lg;
-        background: var(--color-surface);
-        padding: clamp(2.5rem, 6vw, 3.5rem);
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        background: linear-gradient(150deg, rgba(10, 13, 30, 0.95), rgba(3, 6, 17, 0.9));
+        box-shadow: 0 30px 70px rgba(3, 7, 18, 0.7);
+        padding: clamp(2rem, 6vw, 3rem);
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.25), transparent 55%),
+                radial-gradient(circle at 80% 0%, rgba(236, 72, 153, 0.2), transparent 60%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        & > * {
+            position: relative;
+            z-index: 1;
+        }
 
         &__title {
             font-family: v.$font-family-heading;
             text-align: center;
-            font-size: clamp(1.6rem, 3vw, 2rem);
+            font-size: clamp(1.6rem, 3vw, 2.1rem);
             font-weight: 600;
-            color: var(--color-text-primary);
+            color: #f1f5f9;
+        }
+    }
+}
+
+.auth-form,
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #cbd5f5;
+    letter-spacing: 0.04em;
+}
+
+.form-control {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: v.$radius-md;
+    padding: 0.85rem 1rem;
+    color: #f8fafc;
+    transition: border-color v.$transition-fast, box-shadow v.$transition-fast, background v.$transition-fast;
+
+    &::placeholder {
+        color: rgba(226, 232, 240, 0.5);
+    }
+
+    &:focus {
+        background: rgba(23, 32, 56, 0.9);
+        border-color: rgba(129, 140, 248, 0.95);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+        color: #f8fafc;
+    }
+}
+
+.btn-primary,
+.btn.btn-primary {
+    border: none;
+    border-radius: v.$radius-md;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, v.$color-primary-700, v.$color-primary-500);
+    box-shadow: 0 25px 40px rgba(79, 70, 229, 0.4);
+    transition: transform v.$transition-fast, box-shadow v.$transition-fast, filter v.$transition-fast;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 35px 55px rgba(79, 70, 229, 0.5);
+        filter: brightness(1.05);
+    }
+
+    &:disabled,
+    &.disabled {
+        opacity: 0.75;
+        box-shadow: none;
+        cursor: not-allowed;
+    }
+}
+
+.btn-outline-danger,
+.profile-card__logout-btn {
+    border: 1px solid rgba(248, 113, 113, 0.45);
+    background: transparent;
+    color: #fecdd3;
+
+    &:hover {
+        background: rgba(248, 113, 113, 0.18);
+        color: #fff;
+    }
+}
+
+
+.app-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1.25rem, 4vw, 2rem);
+    background: transparent;
+
+    &__content {
+        width: v.$container-width;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.85rem 1.5rem;
+        border-radius: v.$radius-lg;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        background: rgba(4, 7, 20, 0.85);
+        box-shadow: 0 25px 60px rgba(2, 6, 23, 0.65);
+        backdrop-filter: blur(18px);
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(circle at 20% 0%, rgba(99, 102, 241, 0.25), transparent 60%);
+            opacity: 0.5;
+            pointer-events: none;
         }
 
-        /*    &__subtitle {
-            color: var(--color-text-secondary);
-            text-align: center;
-            margin-bottom: 0.5rem;
+        & > * {
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: v.$font-family-heading;
+        font-size: clamp(1.25rem, 2vw, 1.5rem);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #f8fafc;
+    }
+
+    &__brand-pill {
+        padding: 0.2rem 0.6rem;
+        border-radius: v.$radius-sm;
+        background: linear-gradient(120deg, v.$color-primary-500, v.$color-secondary-500);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        letter-spacing: normal;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    &__profile {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.9rem;
+        background: rgba(15, 23, 42, 0.65);
+        border-radius: v.$radius-md;
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        min-width: 0;
+        backdrop-filter: blur(12px);
+    }
+
+    &__avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: v.$radius-md;
+        background: linear-gradient(135deg, v.$color-primary-600, v.$color-primary-500);
+        color: #ffffff;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__user {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+    }
+
+    &__user-label {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.7rem;
+        color: #94a3b8;
+    }
+
+    &__user-name {
+        font-weight: 600;
+        color: #f8fafc;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 220px;
+    }
+
+    &__user-email {
+        font-size: 0.85rem;
+        color: #cbd5f5;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 220px;
+    }
+
+    &__logout-btn {
+        border: none;
+        outline: none;
+        border-radius: v.$radius-md;
+        padding: 0.65rem 1.25rem;
+        font-weight: 600;
+        font-family: v.$font-family-base;
+        color: #ffffff;
+        background: linear-gradient(135deg, v.$color-primary-600, v.$color-secondary-500);
+        box-shadow: v.$shadow-sm;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        cursor: pointer;
+        transition: transform v.$transition-fast, box-shadow v.$transition-fast, filter v.$transition-fast;
+
+        &:hover {
+            box-shadow: v.$shadow-md;
+            filter: brightness(1.05);
         }
 
-        &__toggle {
-            width: max-content;
-            margin-left: auto;
-            margin-right: auto;
-        } */
+        &:focus-visible {
+            outline: 2px solid rgba(79, 70, 229, 0.6);
+            outline-offset: 2px;
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .app-navbar {
+        position: static;
+        padding: 1rem;
+
+        &__content {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__actions {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        &__profile {
+            width: 100%;
+        }
+
+        &__logout-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        &__user-email {
+            display: none;
+        }
     }
 }
 
 // Profile Page Styles
 .profile-page {
-    align-self: center;
-    justify-content: center;
+    width: 100%;
+    max-width: none;
+    align-self: stretch;
+    display: flex;
     align-items: center;
-    text-align: left;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 3rem);
+    border: none;
+    box-shadow: none;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(79, 70, 229, 0.15), transparent 55%),
+        radial-gradient(circle at 80% 0%, rgba(236, 72, 153, 0.1), transparent 60%),
+        #030617;
+    gap: 0;
+
+    &::before {
+        display: none;
+    }
 
     .profile-card {
-        width: min(480px, 100%);
+        width: min(620px, 100%);
         border-radius: v.$radius-lg;
-        border: 1px solid var(--color-border);
-        box-shadow: v.$shadow-lg;
-        background: var(--color-surface);
-        padding: clamp(2.5rem, 6vw, 3.5rem);
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        box-shadow: 0 30px 80px rgba(2, 6, 23, 0.55);
+        background: linear-gradient(160deg, rgba(15, 18, 36, 0.9), rgba(5, 8, 20, 0.95));
+        padding: clamp(2rem, 5vw, 3rem);
         display: flex;
         flex-direction: column;
         gap: 2rem;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.35), transparent 55%),
+                radial-gradient(circle at 85% 15%, rgba(79, 70, 229, 0.25), transparent 50%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        & > * {
+            position: relative;
+            z-index: 1;
+        }
 
         &__header {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--color-border);
+            text-align: center;
         }
 
         &__avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--bs-primary);
+            width: 96px;
+            height: 96px;
+            border-radius: 28px;
+            background: linear-gradient(145deg, v.$color-primary-600, v.$color-primary-500);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 18px 40px rgba(99, 102, 241, 0.35);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: v.$shadow-md;
         }
 
         &__avatar-text {
-            font-size: 2rem;
+            font-size: 2.8rem;
             font-weight: 700;
             color: #ffffff;
+            letter-spacing: 0.04em;
         }
 
         &__title {
             font-family: v.$font-family-heading;
-            font-size: clamp(1.5rem, 3vw, 1.8rem);
+            font-size: clamp(1.8rem, 3vw, 2.25rem);
             font-weight: 600;
-            color: var(--color-text-primary);
+            color: #f8fafc;
             margin: 0;
         }
 
         &__badge {
-            font-size: 0.875rem;
-            padding: 0.35rem 0.75rem;
-            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.2);
+            color: #c7d2fe;
+            border: 1px solid rgba(99, 102, 241, 0.4);
         }
 
         &__info {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
         }
 
         &__info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: v.$radius-md;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         &__info-label {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--color-text-secondary);
+            color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.35rem;
         }
 
         &__info-value {
             font-size: 1rem;
-            color: var(--color-text-primary);
+            color: #f1f5f9;
             margin: 0;
+            letter-spacing: 0.02em;
             word-break: break-word;
         }
 
@@ -223,8 +531,67 @@ body {
             flex-direction: column;
             gap: 0.75rem;
             padding-top: 1rem;
-            border-top: 1px solid var(--color-border);
+            border-top: 1px solid rgba(99, 102, 241, 0.25);
         }
 
+        &__logout-btn {
+            width: 100%;
+            border: none;
+            outline: none;
+            border-radius: v.$radius-md;
+            padding: 0.9rem 1.25rem;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.03em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            background: linear-gradient(135deg, v.$color-primary-700, v.$color-primary-500);
+            box-shadow: 0 18px 35px rgba(79, 70, 229, 0.35);
+            cursor: pointer;
+            transition: transform v.$transition-fast, box-shadow v.$transition-fast;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 25px 45px rgba(79, 70, 229, 0.45);
+            }
+
+            &:focus-visible {
+                outline: 2px solid rgba(129, 140, 248, 0.65);
+                outline-offset: 3px;
+            }
+        }
+
+        &__loading {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            color: #cbd5f5;
+            font-size: 0.95rem;
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .profile-page {
+        padding: 1.5rem;
+
+        .profile-card {
+            padding: 1.75rem;
+
+            &__info {
+                grid-template-columns: 1fr;
+            }
+
+            &__avatar {
+                width: 84px;
+                height: 84px;
+            }
+        }
     }
 }

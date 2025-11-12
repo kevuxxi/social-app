@@ -5,6 +5,7 @@ import { registerRequest } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const { token, loading, error } = useSelector((state) => state.auth)
@@ -19,7 +20,6 @@ const Register = () => {
     const validate = () => {
         const newErrors = {};
 
-        // 1. Validación de campos obligatorios
         if (!username.trim()) {
             newErrors.username = 'El nombre de usuario es obligatorio.';
         }
@@ -30,19 +30,16 @@ const Register = () => {
             newErrors.password = 'El campo contraseña es obligatorio.';
         }
 
-        // 2. Validación de formato de Email (Regex simple)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email.trim() && !emailRegex.test(email)) {
             newErrors.email = 'El formato del email no es válido.';
         }
 
-        // 3. Validación de longitud de Contraseña
         if (password.length > 0 && password.length < 8) {
             newErrors.password = 'La contraseña debe tener al menos 8 caracteres.';
         }
 
         setErrors(newErrors);
-        // Devuelve true si no hay errores (el objeto está vacío)
         return Object.keys(newErrors).length === 0;
     };
 
@@ -103,13 +100,14 @@ const Register = () => {
                             <Button variant="primary" type="submit" size="lg" className="w-100  btn btn--primary register-form__submit" disabled={loading}>
                                 {loading
                                     ? <ClipLoader
-                                        color="#FFFFFF" // Usa un color que contraste con el primario (azul)
+                                        color="#FFFFFF"
                                         size={20}
                                     />
                                     : "Registrarse"
                                 }
                             </Button>
                         </Form>
+                        <button><Link to={'/login'}>¿Ya tienes cuenta? Inicia sesión</Link></button>
                     </Card>
                 </Col>
             </Row>
