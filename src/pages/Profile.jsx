@@ -16,8 +16,6 @@ const Profile = () => {
     const authUser = useSelector((state) => state.auth.user)
     const dispatch = useDispatch();
 
-
-
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
         return new Date(dateString).toLocaleDateString('es-AR', {
@@ -54,11 +52,10 @@ const Profile = () => {
             {loading ? (
                 <div className="profile-card">
                     <ClipLoader
-                        color="#FFFFFF" // Usa un color que contraste con el primario (azul)
+                        color="#FFFFFF"
                         size={20}
                     />
                 </div>) : (<div className="profile-card">
-                    {/* Header con avatar */}
                     <div className="profile-card__header">
                         <div className="profile-card__avatar">
                             <span className="profile-card__avatar-text">
@@ -73,7 +70,6 @@ const Profile = () => {
                         </Badge>
                     </div>
 
-                    {/* Información del usuario */}
                     <div className="profile-card__info">
                         <div className="profile-card__info-item">
                             <span className="profile-card__info-label">Email</span>
@@ -88,7 +84,6 @@ const Profile = () => {
                         )}
                     </div>
 
-                    {/* Botones de acción */}
                     <div className="profile-card__actions">
                         <Button
                             variant="outline-danger"

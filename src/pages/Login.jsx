@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import { fetchUserRequest } from "../redux/slices/usersSlice";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const { user, token, loading, error } = useSelector((state) => state.auth)
@@ -106,6 +107,7 @@ const Login = () => {
                                 }
                             </Button>
                         </Form>
+                        <button><Link to={'/register'}>¿No tienes cuenta? Regístrate</Link></button>
                     </Card>
                 </Col>
             </Row>
