@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL ?? "http://localhost:5173";
+const baseURL = import.meta.env.VITE_API_URL ?? "https://social-app-production-8e89.up.railway.app/api";
 
 const axiosInstance = axios.create({
     baseURL,

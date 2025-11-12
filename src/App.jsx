@@ -8,21 +8,23 @@ import Login from './pages/Login';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar'
+import { useSelector } from 'react-redux';
+import LandingPage from './pages/LandingPage';
 
 function App() {
-
+  const { token } = useSelector((state) => state.auth)
   return (
     <>
       <BrowserRouter>
         <div className='app-shell'>
+          {token && <Navbar />}
           <main className="app-main">
             <Routes>
-              <Route path='/' element={<h1>Home</h1>} />
+              <Route path='/' element={<LandingPage />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/profile' element={
                 <PrivateRoute>
-                  <Navbar />
                   <Profile />
                 </PrivateRoute>} />
             </Routes>

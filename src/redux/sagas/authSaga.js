@@ -9,12 +9,24 @@ import {
     registerSuccess,
 } from "../slices/authSlice";
 import { registerUser, loginUser } from "../../api/authService";
-
+import { jwtDecode } from "jwt-decode";
 
 function* handleLogin(action) {
     try {
         const response = yield call(loginUser, action.payload);
-        const { token, user } = response?.data ?? {}
+        const { token } = response?.data ?? {}
+
+        if (!token) throw new Error("No se recibió token desde el servidor");
+
+        const decoded = jwtDecode(token);
+
+
+        const user = {
+            id: decoded.user?.user_id,
+            username: decoded.user?.name,
+            email: decoded.user?.email,
+        };
+
         yield put(loginSuccess({ token, user }))
 
         if (token) {
@@ -31,7 +43,16 @@ function* handleLogin(action) {
 function* handleRegister(action) {
     try {
         const response = yield call(registerUser, action.payload);
-        const { token, user } = response?.data ?? {};
+        const { token } = response?.data ?? {};
+
+        if (!token) throw new Error("No se recibió token desde el servidor");
+
+        const decoded = jwtDecode(token);
+        const user = {
+            id: decoded.user?.user_id,
+            username: decoded.user?.name,
+            email: decoded.user?.email,
+        };
 
         if (token) {
             localStorage.setItem("token", token);

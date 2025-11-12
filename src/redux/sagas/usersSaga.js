@@ -5,8 +5,19 @@ import { logout } from "../slices/authSlice";
 
 function* handleGetUserById(action) {
     try {
-        const { data } = yield call(getUserById, action.payload);
-        yield put(fetchUserSuccess(data));
+        const response = yield call(getUserById, action.payload);
+
+        const userData = response.data.data;
+
+        const user = {
+            id: userData.user_id,
+            username: userData.user_name,
+            email: userData.email,
+            createdAt: userData.created_at,
+        };
+
+
+        yield put(fetchUserSuccess(user));
     } catch (error) {
         yield put(fetchUserFailure(error.message || "No se pudieron obtener al usuario"));
     }

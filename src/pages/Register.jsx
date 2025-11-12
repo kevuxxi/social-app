@@ -49,7 +49,7 @@ const Register = () => {
         if (!validate()) {
             return;
         }
-        dispatch(registerRequest({ username, email, password }))
+        dispatch(registerRequest({ user_name: username, email, password }))
         setEmail('')
         setPassword('')
         setUsername('')
