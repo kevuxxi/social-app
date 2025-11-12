@@ -9,6 +9,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar'
 import { useSelector } from 'react-redux';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   const { token } = useSelector((state) => state.auth)
@@ -19,7 +20,7 @@ function App() {
           {token && <Navbar />}
           <main className="app-main">
             <Routes>
-              <Route path='/' element={<h1>Home</h1>} />
+              <Route path='/' element={<LandingPage />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/profile' element={
