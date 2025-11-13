@@ -45,6 +45,40 @@ body {
     background: linear-gradient(180deg, rgba(2, 6, 23, 1), rgba(2, 6, 23, 0.92) 40%, rgba(5, 8, 20, 0.85));
 }
 
+.app-header {
+    width: 100%;
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 2rem);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.18);
+    background: rgba(2, 6, 23, 0.85);
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.65);
+    backdrop-filter: blur(14px);
+
+    &__inner {
+        width: v.$container-width;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__logo {
+        font-family: v.$font-family-heading;
+        font-size: 1.25rem;
+        text-transform: uppercase;
+        letter-spacing: 0.28em;
+        color: #f8fafc;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color v.$transition-fast;
+
+        &:hover {
+            color: #c7d2fe;
+        }
+    }
+}
+
 .app-main {
     flex: 1;
     width: 100%;

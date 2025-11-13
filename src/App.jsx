@@ -10,13 +10,16 @@ import Profile from './pages/Profile';
 import Navbar from './components/Navbar'
 import { useSelector } from 'react-redux';
 import LandingPage from './pages/LandingPage';
+import PostDetailPage from './pages/PostDetail/PostDetailPage';
+import FeedPage from './pages/Feed/FeedPage';
+import MainLayout from './components/Layout/MainLayout';
 
 function App() {
   const { token } = useSelector((state) => state.auth)
   return (
     <>
       <BrowserRouter>
-        <div className='app-shell'>
+        <MainLayout>
           {token && <Navbar />}
           <main className="app-main">
             <Routes>
@@ -27,9 +30,17 @@ function App() {
                 <PrivateRoute>
                   <Profile />
                 </PrivateRoute>} />
+              <Route path='/feed' element={
+                <PrivateRoute>
+                  <FeedPage />
+                </PrivateRoute>} />
+              <Route path='/post/:id' element={
+                <PrivateRoute>
+                  <PostDetailPage />
+                </PrivateRoute>} />
             </Routes>
           </main>
-        </div>
+        </MainLayout>
       </BrowserRouter>
 
       <ToastContainer
