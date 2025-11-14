@@ -1,11 +1,29 @@
 import axiosInstance from "./axiosInstance";
 
-export const getPosts = async () => {
+
+/*   const posts = {
+             id: postsData.post_id,
+             userid: postsData.user_id,
+             post: postsData.content,
+             image: postsData.image_url,
+             createdAt: postsData.created_at,
+             modifiedAt: postsData.modified_at
+         } */
+
+
+
+export const getPosts = async ({ page = 1, limit = 10 } = {}) => {
     try {
         const response = await axiosInstance.get(`/allpost`, {
             params: { page, limit }
         });
-        return response.data;
+        const posts = response?.data?.data ?? []
+        const pagination = response?.data?.pagination ?? {
+            page,
+            limit,
+            total: posts.length,
+        }
+        return { posts, pagination }
     } catch (error) {
         console.error('Error al obtener los posts:', error);
         throw error;

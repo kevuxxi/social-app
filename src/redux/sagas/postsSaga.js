@@ -14,17 +14,7 @@ function* fetchPosts(action) {
 
     yield put(setLoading(true))
     try {
-        const response = yield call(getPosts, action.payload);
-        const posts = response?.data.data ?? []
-        const pagination = response?.data?.pagination ?? {}
-        /*   const posts = {
-              id: postsData.post_id,
-              userid: postsData.user_id,
-              post: postsData.content,
-              image: postsData.image_url,
-              createdAt: postsData.created_at,
-              modifiedAt: postsData.modified_at
-          } */
+        const { posts, pagination } = yield call(getPosts, action.payload);
         yield put(setPosts(posts))
         yield put(setPagination(pagination))
     } catch (error) {
