@@ -11,7 +11,7 @@ export const DELETE_POST = "posts/deletePost";
 
 
 function* fetchPosts(action) {
-
+    yield put(setError(null))
     yield put(setLoading(true))
     try {
         const { posts, pagination } = yield call(getPosts, action.payload);
