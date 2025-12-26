@@ -3,13 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Container } from 'react-bootstrap'
 import { ClipLoader } from 'react-spinners'
 import PostList from '../../components/Feed/PostList'
+import CreatePostForm from './CreatePostForm'
 import { fetchPosts } from '../../redux/slices/postsSlice'
 import './FeedPage.scss'
 
 const FeedPage = () => {
   const { posts, loading, error, pagination } = useSelector((state) => state.posts)
   const dispatch = useDispatch()
-  const postList = posts?.list ?? []
+  const postList = Array.isArray(posts) ? posts : posts?.list ?? []
 
   useEffect(() => {
     dispatch(fetchPosts({ page: pagination.page, limit: pagination.limit }))
@@ -38,7 +39,7 @@ const FeedPage = () => {
           {error}
         </div>
       )}
-
+      <CreatePostForm />
       {loading ? (
         <div className="feed-page__loader" aria-live="polite">
           <ClipLoader color="#c7d2fe" size={34} />

@@ -11,15 +11,26 @@ const initialState = {
         limit: 10,
         total: 0
     },
-    postDetail: null
+    postDetail: null,
+    createLoading: false,
+    createError: null,
+    createSuccess: false,
+
 }
 
 const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
+        createPost: (state) => state,
+        setCreateLoading: (state, action) => { state.createLoading = action.payload },
+        setCreateError: (state, action) => { state.createError = action.payload },
+        setCreateSuccess: (state, action) => { state.createSuccess = action.payload },
         fetchPosts: (state) => state,
         setPosts: (state, action) => {
+            if (!state.posts || Array.isArray(state.posts)) {
+                state.posts = { list: [] };
+            }
             state.posts.list = action.payload;
         },
         setPostDetail: (state, action) => {
@@ -36,7 +47,9 @@ const postsSlice = createSlice({
         },
         setError: (state, action) => {
             state.error = action.payload;
-        }
+        },
+
+
     }
 
 })
@@ -48,6 +61,10 @@ export const {
     setPagination,
     setLoading,
     setError,
+    createPost,
+    setCreateError,
+    setCreateSuccess,
+    setCreateLoading
 } = postsSlice.actions;
 
 

@@ -14,10 +14,10 @@ import axiosInstance from "./axiosInstance";
 
 export const getPosts = async ({ page = 1, limit = 10 } = {}) => {
     try {
-        const response = await axiosInstance.get(`/allpost`, {
+        const response = await axiosInstance.get(`/posts/allpost`, {
             params: { page, limit }
         });
-        const posts = response?.data?.data ?? []
+        const posts = response?.data?.posts ?? response?.data?.data ?? []
         const pagination = response?.data?.pagination ?? {
             page,
             limit,
@@ -32,7 +32,7 @@ export const getPosts = async ({ page = 1, limit = 10 } = {}) => {
 
 export const getPostById = async (id) => {
     try {
-        const response = await axiosInstance.get(`/postById/${id}`);
+        const response = await axiosInstance.get(`/posts/postById/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error al obtener el post:', error);
@@ -40,9 +40,9 @@ export const getPostById = async (id) => {
     }
 }
 
-export const createPost = async (userId, postData) => {
+export const createPost = async ({ userId, content, image_url }) => {
     try {
-        const response = await axiosInstance.post(`/CreatePost/${userId}`, postData);
+        const response = await axiosInstance.post(`/posts/CreatePost/${userId}`, { content, image_url });
         return response.data;
     } catch (error) {
         console.error('Error al obtener el post:', error);
@@ -52,7 +52,7 @@ export const createPost = async (userId, postData) => {
 
 export const deletePost = async (id) => {
     try {
-        return await axiosInstance.delete(`/removePost/${id}`)
+        return await axiosInstance.delete(`/posts/removePost/${id}`)
     } catch (error) {
         console.error(`Error al eliminar el post con ID ${id}:`, error);
         throw error;

@@ -3,7 +3,7 @@ import "./PostCard.scss"
 const PostCard = ({ post }) => {
   if (!post) return null
 
-  const username = post.user?.username ?? post.username
+  const username = post.user?.username ?? post.username ?? post.user_name
   const userId = post.user?.id ?? post.user_id
   const content = post.content
   const imageUrl = post.image_url

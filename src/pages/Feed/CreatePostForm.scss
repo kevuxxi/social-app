@@ -1,0 +1,107 @@
+﻿@use '../../styles/base/variables' as v;
+
+.create-post {
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+  padding: clamp(1.2rem, 3vw, 1.6rem);
+  border-radius: v.$radius-lg;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  background: linear-gradient(160deg, rgba(9, 12, 28, 0.92), rgba(6, 8, 20, 0.96));
+  box-shadow: 0 18px 45px rgba(3, 7, 18, 0.55);
+}
+
+.create-post__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.create-post__title {
+  margin: 0;
+  font-family: v.$font-family-heading;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  color: #f8fafc;
+}
+
+.create-post__subtitle {
+  margin: 0;
+  color: #cbd5f5;
+}
+
+.create-post__input {
+  width: 100%;
+  border-radius: v.$radius-md;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.6);
+  color: #e2e8f0;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color v.$transition-fast, box-shadow v.$transition-fast;
+}
+
+.create-post__input::placeholder {
+  color: rgba(226, 232, 240, 0.6);
+}
+
+.create-post__input:focus {
+  border-color: rgba(129, 140, 248, 0.8);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+}
+
+.create-post__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.create-post__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.create-post__button {
+  border: none;
+  border-radius: v.$radius-md;
+  padding: 0.7rem 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: linear-gradient(135deg, #c7d2fe, #818cf8);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.25);
+  cursor: pointer;
+  transition: transform v.$transition-fast, box-shadow v.$transition-fast, opacity v.$transition-fast;
+}
+
+.create-post__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(129, 140, 248, 0.35);
+}
+
+.create-post__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.create-post__error,
+.create-post__success {
+  margin: 0;
+  padding: 0.65rem 0.9rem;
+  border-radius: v.$radius-md;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.create-post__error {
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(127, 29, 29, 0.25);
+  color: #fecdd3;
+}
+
+.create-post__success {
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(20, 83, 45, 0.25);
+  color: #bbf7d0;
+}

@@ -4,10 +4,15 @@ import {
     setError,
     setLoading,
     setPagination,
-    setPostDetail,
-    setPosts
+    createPost as createPostAction,
+    setPosts,
+    setCreateLoading,
+    setCreateError,
+    setCreateSuccess,
+    fetchPosts
 } from "../slices/postsSlice";
-import { getPosts } from "../../api/postsService";
+import { getPosts, createPost as createPostApi } from '../../api/postsService'
+
 
 
 export const FETCH_POST_BY_ID = "posts/fetchPostById";
@@ -40,10 +45,17 @@ function* fetchPostById(action) {
 }
 
 function* createPost(action) {
+    yield put(setCreateError(null))
+    yield put(setCreateSuccess(false))
+    yield put(setCreateLoading(true))
     try {
-
+        yield call(createPostApi, action.payload)
+        yield put(setCreateSuccess(true))
+        yield put(fetchPosts({ page: 1, limit: 10 }))
     } catch (error) {
-
+        yield put(setCreateError(error.message || 'No se pudo crear el post'))
+    } finally {
+        yield put(setCreateLoading(false))
     }
 }
 
@@ -65,7 +77,7 @@ function* watchFetchPostById() {
 }
 
 function* watchCreatePost() {
-    yield takeLatest(CREATE_POST, createPost);
+    yield takeLatest(createPostAction.type, createPost)
 }
 
 function* watchDeletePost() {
