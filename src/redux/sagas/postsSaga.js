@@ -1,16 +1,22 @@
-import { all, call, fork, put, takeLatest } from "redux-saga/effects";
-import { setError, setLoading, setPagination, setPostDetail, setPosts } from "../slices/postsSlice";
+import { all, call, put, takeLatest } from "redux-saga/effects";
+import {
+    fetchPosts as fetchPostsAction,
+    setError,
+    setLoading,
+    setPagination,
+    setPostDetail,
+    setPosts
+} from "../slices/postsSlice";
 import { getPosts } from "../../api/postsService";
 
 
-export const FETCH_POSTS = "posts/fetchPosts";
 export const FETCH_POST_BY_ID = "posts/fetchPostById";
 export const CREATE_POST = "posts/createPost";
 export const DELETE_POST = "posts/deletePost";
 
 
 
-function* fetchPosts(action) {
+function* fetchPostsSaga(action) {
     yield put(setError(null))
     yield put(setLoading(true))
     try {
@@ -51,7 +57,7 @@ function* deletePost(action) {
 
 
 function* watchFetchPosts() {
-    yield takeLatest(FETCH_POSTS, fetchPosts);
+    yield takeLatest(fetchPostsAction.type, fetchPostsSaga);
 }
 
 function* watchFetchPostById() {

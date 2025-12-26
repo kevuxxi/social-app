@@ -3,21 +3,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Container } from 'react-bootstrap'
 import { ClipLoader } from 'react-spinners'
 import PostList from '../../components/Feed/PostList'
-import { FETCH_POSTS } from '../../redux/sagas/postsSaga'
+import { fetchPosts } from '../../redux/slices/postsSlice'
 import './FeedPage.scss'
 
 const FeedPage = () => {
   const { posts, loading, error, pagination } = useSelector((state) => state.posts)
   const dispatch = useDispatch()
+  const postList = posts?.list ?? []
 
   useEffect(() => {
-    dispatch({
-      type: FETCH_POSTS,
-      payload: { page: pagination.page, limit: pagination.limit }
-    })
+    dispatch(fetchPosts({ page: pagination.page, limit: pagination.limit }))
   }, [dispatch, pagination.page, pagination.limit])
 
-  const hasPosts = Array.isArray(posts) && posts.length > 0
+  const hasPosts = Array.isArray(postList) && postList.length > 0
 
   return (
     <Container className="page feed-page">
@@ -31,7 +29,7 @@ const FeedPage = () => {
         </div>
         <div className="feed-page__meta">
           <span className="feed-page__pill">P&aacute;gina {pagination.page}</span>
-          <span className="feed-page__pill">{posts.length} posts</span>
+          <span className="feed-page__pill">{postList.length} posts</span>
         </div>
       </header>
 
@@ -47,7 +45,7 @@ const FeedPage = () => {
           <p>Cargando contenido...</p>
         </div>
       ) : hasPosts ? (
-        <PostList posts={posts} />
+        <PostList posts={postList} />
       ) : (
         <div className="feed-page__empty">
           <h2>Sin publicaciones a&uacute;n</h2>

@@ -3,14 +3,12 @@ import "./PostCard.scss"
 const PostCard = ({ post }) => {
   if (!post) return null
 
-  const {
-    username,
-    user_id: userId,
-    content,
-    image_url: imageUrl,
-    created_at: createdAt,
-    post_id: postId,
-  } = post
+  const username = post.user?.username ?? post.username
+  const userId = post.user?.id ?? post.user_id
+  const content = post.content
+  const imageUrl = post.image_url
+  const createdAt = post.created_at
+  const postId = post.post_id ?? post.id
 
   const author = username || (userId ? `Usuario ${userId}` : "Autor desconocido")
   const avatarLabel = author?.charAt(0)?.toUpperCase() || "U"

@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    posts: [],
+    posts: {
+        list: [],
+    },
     loading: false,
     error: null,
     pagination: {
@@ -16,8 +18,9 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
+        fetchPosts: (state) => state,
         setPosts: (state, action) => {
-            state.posts = action.payload;
+            state.posts.list = action.payload;
         },
         setPostDetail: (state, action) => {
             state.postDetail = action.payload;
@@ -39,6 +42,7 @@ const postsSlice = createSlice({
 })
 
 export const {
+    fetchPosts,
     setPosts,
     setPostDetail,
     setPagination,
