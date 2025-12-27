@@ -1,4 +1,5 @@
 import { all, call, put, takeLatest } from "redux-saga/effects";
+import { DELETE_POST } from "./constants";
 import {
     fetchPosts as fetchPostsAction,
     setError,
@@ -9,17 +10,13 @@ import {
     setCreateLoading,
     setCreateError,
     setCreateSuccess,
-    fetchPosts
+    fetchPosts,
+    setDetailError,
+    setDetailLoading,
+    setPostDetail,
+    fetchPostById as fetchPostByIdAction
 } from "../slices/postsSlice";
-import { getPosts, createPost as createPostApi } from '../../api/postsService'
-
-
-
-export const FETCH_POST_BY_ID = "posts/fetchPostById";
-export const CREATE_POST = "posts/createPost";
-export const DELETE_POST = "posts/deletePost";
-
-
+import { getPosts, createPost as createPostApi, getPostById } from '../../api/postsService'
 
 function* fetchPostsSaga(action) {
     yield put(setError(null))
@@ -37,10 +34,20 @@ function* fetchPostsSaga(action) {
 }
 
 function* fetchPostById(action) {
+    yield put(setDetailError(null))
+    yield put(setDetailLoading(true))
+    yield put(setPostDetail(null))
     try {
+        const { id } = action.payload || {}
+        if (!id) { yield put(setDetailError('Post id required')); return }
 
+        const postById = yield call(getPostById, id)
+        if (!postById) { yield put((setDetailError('Post not found'))); return }
+        yield put(setPostDetail(postById))
     } catch (error) {
-
+        yield put(setDetailError(error.message || "No se pudo obtener el posts"))
+    } finally {
+        yield put(setDetailLoading(false))
     }
 }
 
@@ -73,7 +80,7 @@ function* watchFetchPosts() {
 }
 
 function* watchFetchPostById() {
-    yield takeLatest(FETCH_POST_BY_ID, fetchPostById);
+    yield takeLatest(fetchPostByIdAction.type, fetchPostById);
 }
 
 function* watchCreatePost() {
