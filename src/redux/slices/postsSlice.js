@@ -11,10 +11,12 @@ const initialState = {
         limit: 10,
         total: 0
     },
-    postDetail: null,
     createLoading: false,
     createError: null,
     createSuccess: false,
+    postDetail: null,
+    detailLoading: false,
+    detailError: null
 
 }
 
@@ -23,18 +25,36 @@ const postsSlice = createSlice({
     initialState,
     reducers: {
         createPost: (state) => state,
-        setCreateLoading: (state, action) => { state.createLoading = action.payload },
-        setCreateError: (state, action) => { state.createError = action.payload },
-        setCreateSuccess: (state, action) => { state.createSuccess = action.payload },
+        setCreateLoading: (state, action) => {
+            state.createLoading = action.payload
+        },
+        setCreateError: (state, action) => {
+            state.createError = action.payload
+        },
+        setCreateSuccess: (state, action) => {
+            state.createSuccess = action.payload
+        },
+        fetchPostById: (state) => state,
+        setPostDetail: (state, action) => {
+            state.postDetail = action.payload
+        },
+        setDetailError: (state, action) => {
+            state.detailError = action.payload
+        },
+        setDetailLoading: (state, action) => {
+            state.detailLoading = action.payload
+        },
+        clearPostDetail: (state) => {
+            state.detailLoading = false
+            state.detailError = null
+            state.postDetail = null
+        },
         fetchPosts: (state) => state,
         setPosts: (state, action) => {
             if (!state.posts || Array.isArray(state.posts)) {
                 state.posts = { list: [] };
             }
             state.posts.list = action.payload;
-        },
-        setPostDetail: (state, action) => {
-            state.postDetail = action.payload;
         },
         setPagination: (state, action) => {
             state.pagination = {
@@ -64,7 +84,11 @@ export const {
     createPost,
     setCreateError,
     setCreateSuccess,
-    setCreateLoading
+    setCreateLoading,
+    fetchPostById,
+    setDetailLoading,
+    setDetailError,
+    clearPostDetail
 } = postsSlice.actions;
 
 
