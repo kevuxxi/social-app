@@ -110,3 +110,15 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 }
+
+.post-card__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.post-card__link:focus-visible {
+  outline: 2px solid rgba(129, 140, 248, 0.8);
+  outline-offset: 4px;
+  border-radius: v.$radius-lg;
+}

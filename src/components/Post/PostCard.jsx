@@ -25,7 +25,7 @@ const PostCard = ({ post }) => {
   if (!postId) return null
 
   return (
-    <Link to={`/post/${postId}`} >
+    <Link to={`/post/${postId}`} className="post-card__link">
       <article className="post-card">
         <header className="post-card__header">
           <div className="post-card__avatar" aria-hidden="true">
