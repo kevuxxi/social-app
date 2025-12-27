@@ -32,8 +32,13 @@ export const getPosts = async ({ page = 1, limit = 10 } = {}) => {
 
 export const getPostById = async (post_id) => {
     try {
-        const response = await axiosInstance.get(`/posts/postById/${post_id}`);
-        return response.data;
+        if (!post_id) throw new Error('Post id required')
+
+        const response = await axiosInstance.get(`/posts/postById/${String(post_id)}`);
+        const postById = response.data?.post ?? response.data?.data ?? response.data
+
+        if (!postById) throw new Error('Post not found')
+        return postById
     } catch (error) {
         console.error('Error al obtener el post:', error);
         throw error;
