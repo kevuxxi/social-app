@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, setCreateSuccess } from '../../redux/slices/postsSlice'
 import { ClipLoader } from 'react-spinners'
@@ -8,12 +8,9 @@ const CreatePostForm = () => {
     const dispatch = useDispatch()
     const { createLoading, createError, createSuccess } = useSelector((state) => state.posts)
     const userId = useSelector((s) => s.auth.user?.id)
-
-
-
-
     const [content, setContent] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+    const fileInputRef = useRef(null)
 
     const isValid = content.trim().length > 0
 
@@ -21,12 +18,15 @@ const CreatePostForm = () => {
         e.preventDefault();
         if (!isValid) return;
         if (!userId) return
-        dispatch(createPost({ userId, content, image_url: imageUrl }))
+        dispatch(createPost({ userId, content, imageFile }))
     }
     useEffect(() => {
         if (!createSuccess) return
         setContent("")
-        setImageUrl("")
+        setImageFile(null)
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+        }
         dispatch(setCreateSuccess(false))
     }, [createSuccess, dispatch])
 
@@ -54,11 +54,11 @@ const CreatePostForm = () => {
                     placeholder='Escribe aqui...'
                 ></textarea>
                 <input
+                    ref={fileInputRef}
                     className="create-post__input"
-                    type="text"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    placeholder="Imagen URL (opcional)"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
                 />
                 <div className="create-post__actions">
                     <button className="create-post__button" type="submit" disabled={!isValid || createLoading}>Post</button>
@@ -69,3 +69,4 @@ const CreatePostForm = () => {
 }
 
 export default CreatePostForm
+

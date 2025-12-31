@@ -1,9 +1,23 @@
 import { Link } from "react-router-dom"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import "./PostDetailPage.scss"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchPostById, clearPostDetail } from "../../redux/slices/postsSlice"
 
 const PostDetailPage = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
+    const { postDetail, detailLoading, detailError } = useSelector((state) => (state.posts))
+
+    useEffect(() => {
+        if (!id) return
+        dispatch(fetchPostById({ id }))
+        return () => {
+            return dispatch(clearPostDetail())
+        }
+
+    }, [id, dispatch])
 
     return (
         <div className="page post-detail">

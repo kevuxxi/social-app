@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { REHYDRATE } from "redux-persist";
 
 const initialState = {
     posts: {
@@ -56,6 +57,14 @@ const postsSlice = createSlice({
             }
             state.posts.list = action.payload;
         },
+        appendPosts: (state, action) => {
+            if (!state.posts || Array.isArray(state.posts)) {
+                state.posts = { list: [] };
+            }
+            const current = Array.isArray(state.posts.list) ? state.posts.list : []
+            const incoming = Array.isArray(action.payload) ? action.payload : []
+            state.posts.list = [...current, ...incoming]
+        },
         setPagination: (state, action) => {
             state.pagination = {
                 ...state.pagination,
@@ -67,9 +76,18 @@ const postsSlice = createSlice({
         },
         setError: (state, action) => {
             state.error = action.payload;
-        },
-
-
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(REHYDRATE, (state) => {
+            state.loading = false
+            state.error = null
+            state.createLoading = false
+            state.createError = null
+            state.createSuccess = false
+            state.detailLoading = false
+            state.detailError = null
+        })
     }
 
 })
@@ -77,6 +95,7 @@ const postsSlice = createSlice({
 export const {
     fetchPosts,
     setPosts,
+    appendPosts,
     setPostDetail,
     setPagination,
     setLoading,

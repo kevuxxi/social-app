@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+﻿import axiosInstance from "./axiosInstance";
 
 
 /*   const posts = {
@@ -18,10 +18,11 @@ export const getPosts = async ({ page = 1, limit = 10 } = {}) => {
             params: { page, limit }
         });
         const posts = response?.data?.posts ?? response?.data?.data ?? []
-        const pagination = response?.data?.pagination ?? {
-            page,
-            limit,
-            total: posts.length,
+        const apiPagination = response?.data?.pagination
+        const pagination = {
+            page: apiPagination?.page ?? page,
+            limit: apiPagination?.limit ?? limit,
+            total: typeof apiPagination?.total === 'number' ? apiPagination.total : null
         }
         return { posts, pagination }
     } catch (error) {
@@ -35,7 +36,9 @@ export const getPostById = async (post_id) => {
         if (!post_id) throw new Error('Post id required')
 
         const response = await axiosInstance.get(`/posts/postById/${String(post_id)}`);
-        const postById = response.data?.post ?? response.data?.data ?? response.data
+        const data = response.data;
+
+        const postById = data?.post ?? data?.data ?? data?.["0"];
 
         if (!postById) throw new Error('Post not found')
         return postById
@@ -45,9 +48,18 @@ export const getPostById = async (post_id) => {
     }
 }
 
-export const createPost = async ({ userId, content, image_url }) => {
+export const createPost = async ({ userId, content, imageFile }) => {
     try {
-        const response = await axiosInstance.post(`/posts/CreatePost/${userId}`, { content, image_url });
+        const formData = new FormData()
+        formData.append('content', content)
+        if (imageFile) {
+            formData.append('image', imageFile)
+        }
+        const response = await axiosInstance.post(`/posts/CreatePost/${userId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         return response.data;
     } catch (error) {
         console.error('Error al obtener el post:', error);
@@ -63,3 +75,4 @@ export const deletePost = async (id) => {
         throw error;
     }
 }
+

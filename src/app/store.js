@@ -11,11 +11,24 @@ import postsReducer from '../redux/slices/postsSlice'
 
 const sagaMiddleware = createSagaMiddleware();
 
+const postsPersistConfig = {
+    key: 'posts',
+    storage,
+    blacklist: [
+        'loading',
+        'error',
+        'createLoading',
+        'createError',
+        'createSuccess',
+        'detailLoading',
+        'detailError'
+    ]
+}
+
 const rootReducer = combineReducers({
     auth: authReducer,
     users: usersReducer,
-    posts: postsReducer
-
+    posts: persistReducer(postsPersistConfig, postsReducer)
 })
 
 const persistConfig = {

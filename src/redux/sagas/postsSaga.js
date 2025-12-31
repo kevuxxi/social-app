@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, delay, put, takeLatest } from "redux-saga/effects";
 import { DELETE_POST } from "./constants";
 import {
     fetchPosts as fetchPostsAction,
@@ -7,6 +7,7 @@ import {
     setPagination,
     createPost as createPostAction,
     setPosts,
+    appendPosts,
     setCreateLoading,
     setCreateError,
     setCreateSuccess,
@@ -23,10 +24,17 @@ function* fetchPostsSaga(action) {
     yield put(setLoading(true))
     try {
         const { posts, pagination } = yield call(getPosts, action.payload);
-        yield put(setPosts(posts))
-        yield put(setPagination(pagination))
+        const mode = action.payload?.mode ?? "replace"
+        if (mode === "append") {
+            yield put(appendPosts(posts))
+        } else {
+            yield put(setPosts(posts))
+        }
+        yield put(setPagination({ ...pagination, lastCount: posts.length }))
     } catch (error) {
         yield put(setError(error.message || "No se pudieron obtener los posts"));
+        yield delay(4000)
+        yield put(setError(null))
     }
     finally {
         yield put(setLoading(false))
