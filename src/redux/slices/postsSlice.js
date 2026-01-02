@@ -5,6 +5,17 @@ const initialState = {
     posts: {
         list: [],
     },
+    profilePosts: {
+        list: [],
+        loading: false,
+        error: null,
+        pagination: {
+            page: 1,
+            limit: 10,
+            total: 0
+        },
+        userId: null
+    },
     loading: false,
     error: null,
     pagination: {
@@ -98,7 +109,40 @@ const postsSlice = createSlice({
         },
         setError: (state, action) => {
             state.error = action.payload;
-        }
+        },
+        fetchPostsByUser: (state) => state,
+        setProfilePosts: (state, action) => {
+            if (!state.profilePosts || Array.isArray(state.profilePosts)) {
+                state.profilePosts = { list: [] };
+            }
+            state.profilePosts.list = action.payload;
+        },
+        setProfileLoading: (state, action) => {
+            state.profilePosts.loading = action.payload
+        },
+        setProfileError: (state, action) => {
+            state.profilePosts.error = action.payload
+        },
+        setProfilePagination: (state, action) => {
+            state.profilePosts.pagination = {
+                ...state.profilePosts.pagination,
+                ...action.payload
+            };
+        },
+        setProfileUserId: (state, action) => {
+            state.profilePosts.userId = action.payload
+        },
+        clearProfilePosts: (state) => {
+            state.profilePosts.list = []
+            state.profilePosts.loading = false
+            state.profilePosts.error = null
+            state.profilePosts.pagination = {
+                page: 1,
+                limit: 10,
+                total: 0
+            }
+            state.profilePosts.userId = null
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(REHYDRATE, (state) => {
@@ -137,7 +181,14 @@ export const {
     setDeleteLoading,
     setDeleteError,
     setDeletingPostId,
-    removePostFromList
+    removePostFromList,
+    fetchPostsByUser,
+    setProfilePosts,
+    setProfileLoading,
+    setProfileError,
+    setProfileUserId,
+    clearProfilePosts,
+    setProfilePagination
 } = postsSlice.actions;
 
 
