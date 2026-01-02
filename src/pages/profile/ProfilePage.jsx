@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { ClipLoader } from 'react-spinners'
 import PostList from '../../components/Feed/PostList'
+import ProfileHeader from './ProfileHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearProfilePosts, fetchPostsByUser } from '../../redux/slices/postsSlice'
 import './ProfilePage.scss'
@@ -14,6 +15,7 @@ const ProfilePage = () => {
     const page = 1
     const limit = 10
     const hasPosts = Array.isArray(list) && list.length > 0
+    const profileUserName = list?.[0]?.user_name ?? list?.[0]?.user?.username ?? null
 
 
     useEffect(() => {
@@ -35,17 +37,13 @@ const ProfilePage = () => {
                 <h1 className="profile-detail__title">Perfil de usuario</h1>
             </header>
             <main className="profile-detail__content">
-                <div className="profile-detail__card">
-                    <div className="profile-detail__identity">
-                        <div className="profile-detail__avatar" aria-hidden="true">
-                            {profileUserId?.charAt(0)?.toUpperCase() || 'U'}
-                        </div>
-                        <div>
-                            <p className="profile-detail__name">Usuario {profileUserId}</p>
-                            <p className="profile-detail__meta">Miembro de la comunidad</p>
-                        </div>
-                    </div>
-                </div>
+                <ProfileHeader
+                    profileId={profileUserId}
+                    userName={profileUserName}
+                    postsCount={list?.length ?? 0}
+                    loading={loading}
+                    error={error}
+                />
                 <section className="profile-detail__posts">
                     {loading && !hasPosts ? (
                         <div className="feed-page__loader" aria-live="polite">
