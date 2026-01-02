@@ -1,9 +1,24 @@
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { clearProfilePosts, fetchPostsByUser } from '../../redux/slices/postsSlice'
 import './ProfilePage.scss'
 
 const ProfilePage = () => {
-    const { id } = useParams();
+    const { id: profileUserId } = useParams();
+    const dispatch = useDispatch();
+    const page = 1
+    const limit = 10
+
+    useEffect(() => {
+        if (!profileUserId) return
+        dispatch(clearProfilePosts())
+        dispatch(fetchPostsByUser({ userId: profileUserId, page, limit }))
+        return () => {
+            dispatch(clearProfilePosts())
+        }
+    }, [dispatch, profileUserId, page, limit])
     return (
         <section className="page profile-detail">
             <header className="profile-detail__header">
@@ -14,10 +29,10 @@ const ProfilePage = () => {
                 <div className="profile-detail__card">
                     <div className="profile-detail__identity">
                         <div className="profile-detail__avatar" aria-hidden="true">
-                            {id?.charAt(0)?.toUpperCase() || 'U'}
+                            {profileUserId?.charAt(0)?.toUpperCase() || 'U'}
                         </div>
                         <div>
-                            <p className="profile-detail__name">Usuario {id}</p>
+                            <p className="profile-detail__name">Usuario {profileUserId}</p>
                             <p className="profile-detail__meta">Miembro de la comunidad</p>
                         </div>
                     </div>
