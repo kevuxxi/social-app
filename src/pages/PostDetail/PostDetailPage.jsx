@@ -28,6 +28,9 @@ const PostDetailPage = () => {
     const createdAt = getPostDate(postDetail)
     const relativeDate = getRelativeTime(createdAt)
 
+    const author = postUserName || (postOwnerId ? `Usuario ${postOwnerId}` : "Autor desconocido")
+    const avatarLabel = author?.charAt(0)?.toUpperCase() || "U"
+
     useEffect(() => {
         if (!id) return
         dispatch(fetchPostById({ id }))
@@ -81,12 +84,16 @@ const PostDetailPage = () => {
         )
     }
 
+    if (detailLoading) {
+        return (
+            <div className="page post-detail">
+                <Loader text="Cargando..." />
+            </div>
+        )
+    }
+
     return (
         <div className="page post-detail">
-
-            {detailLoading && (
-                <Loader text="Cargando..." />
-            )}
             {detailError && (
                 <ErrorBanner
                     title="No se pudo cargar el post"
@@ -122,10 +129,25 @@ const PostDetailPage = () => {
                             onDismiss={() => dispatch(setDeleteError(null))}
                         />
                     )}
-                    {postUserName ? (
-                        <div className="post-detail__author">Usuario: {postUserName}</div>)
-                        : (<p className="post-detail__author">Usuario: anonimo</p>)}
-                    <p className="post-detail__meta">Fecha de publicacion: {relativeDate}</p>
+                    <div className="post-detail__user">
+                        <Link
+                            to={`/profile/${postOwnerId}`}
+                            className="post-detail__avatar-link"
+                        >
+                            <div className="post-detail__avatar" aria-hidden="true">
+                                {avatarLabel}
+                            </div>
+                        </Link>
+                        <div className="post-detail__user-info">
+                            <Link
+                                to={`/profile/${postOwnerId}`}
+                                className="post-detail__author-link"
+                            >
+                                <h3 className="post-detail__author">{author}</h3>
+                            </Link>
+                            <p className="post-detail__meta">{relativeDate}</p>
+                        </div>
+                    </div>
                     {content && <p className="post-detail__text">{content}</p>}
                     {imageUrl && (
                         <div className="post-detail__image">
