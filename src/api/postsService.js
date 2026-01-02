@@ -65,10 +65,16 @@ export const createPost = async ({ userId, content, imageFile }) => {
 
 export const deletePost = async (id) => {
     try {
-        return await axiosInstance.delete(`/posts/removePost/${id}`)
+        if (!id) throw new Error("Post id is required")
+        const response = await axiosInstance.delete(`/posts/removePost/${id}`)
+        return response?.data ?? true
     } catch (error) {
+        const message = error?.response?.data?.message
+            ?? error?.response?.data?.error
+            ?? error?.message
+            ?? "Unable to delete post"
         console.error(`Error al eliminar el post con ID ${id}:`, error);
-        throw error;
+        throw new Error(message)
     }
 }
 
