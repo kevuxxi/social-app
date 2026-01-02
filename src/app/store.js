@@ -6,19 +6,35 @@ import storage from 'redux-persist/lib/storage';
 import rootSaga from "./rootSaga";
 import authReducer from '../redux/slices/authSlice'
 import usersReducer from '../redux/slices/usersSlice'
+import postsReducer from '../redux/slices/postsSlice'
+
 
 const sagaMiddleware = createSagaMiddleware();
 
+const postsPersistConfig = {
+    key: 'posts',
+    storage,
+    blacklist: [
+        'loading',
+        'error',
+        'createLoading',
+        'createError',
+        'createSuccess',
+        'detailLoading',
+        'detailError'
+    ]
+}
+
 const rootReducer = combineReducers({
     auth: authReducer,
-    users: usersReducer
-
+    users: usersReducer,
+    posts: persistReducer(postsPersistConfig, postsReducer)
 })
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['auth', 'users']
+    whitelist: ['auth', 'users', 'posts']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
