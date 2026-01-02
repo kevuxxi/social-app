@@ -1,0 +1,102 @@
+@use '../../styles/base/variables' as v;
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.post-card-skeleton {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: clamp(1rem, 2.2vw, 1.25rem);
+  border-radius: v.$radius-lg;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  background: linear-gradient(170deg, rgba(9, 12, 28, 0.7), rgba(6, 8, 20, 0.72));
+  box-shadow: 0 18px 45px rgba(3, 7, 18, 0.35);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: v.$radius-md;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.1) 0px, rgba(129, 140, 248, 0.15) 40px, rgba(99, 102, 241, 0.1) 80px);
+    background-size: 600px;
+    animation: shimmer 1.5s infinite;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  &__line {
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.1) 0px, rgba(129, 140, 248, 0.15) 40px, rgba(99, 102, 241, 0.1) 80px);
+    background-size: 600px;
+    animation: shimmer 1.5s infinite;
+
+    &--title {
+      width: 40%;
+      height: 14px;
+    }
+
+    &--subtitle {
+      width: 30%;
+      height: 10px;
+    }
+
+    &--full {
+      width: 100%;
+    }
+
+    &--half {
+      width: 60%;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 420px;
+    border-radius: v.$radius-md;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.08) 0px, rgba(129, 140, 248, 0.12) 40px, rgba(99, 102, 241, 0.08) 80px);
+    background-size: 600px;
+    animation: shimmer 1.5s infinite;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__footer {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+  }
+
+  &__tag {
+    width: 80px;
+    height: 28px;
+    border-radius: v.$radius-sm;
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.08) 0px, rgba(129, 140, 248, 0.12) 40px, rgba(99, 102, 241, 0.08) 80px);
+    background-size: 600px;
+    animation: shimmer 1.5s infinite;
+  }
+}

@@ -1,8 +1,8 @@
 ﻿import { motion } from "framer-motion"
-import { FiLogOut, FiUser } from 'react-icons/fi';
+import { FiLogOut, FiUser, FiHome } from 'react-icons/fi';
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../redux/slices/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 
@@ -26,9 +26,20 @@ const Navbar = () => {
     return (
         <nav className="app-navbar" aria-label="Barra de navegacion principal">
             <div className="app-navbar__content">
-                <div className="app-navbar__brand">
-                    <span className="app-navbar__brand-pill">red</span>
-                    social
+                <Link to="/feed" className="app-navbar__brand">
+                    <span className="app-navbar__brand-pill">social</span>
+                    app
+                </Link>
+
+                <div className="app-navbar__nav">
+                    <Link to="/feed" className="app-navbar__nav-link">
+                        <FiHome size={18} />
+                        <span>Feed</span>
+                    </Link>
+                    <Link to={`/profile/${authUser?.id}`} className="app-navbar__nav-link">
+                        <FiUser size={18} />
+                        <span>Perfil</span>
+                    </Link>
                 </div>
 
                 <div className="app-navbar__actions">
@@ -37,13 +48,14 @@ const Navbar = () => {
                             {activeUser ? initials : <FiUser size={18} />}
                         </div>
                         <div className="app-navbar__user">
-                            <span className="app-navbar__user-label">
-                                {activeUser ? 'Sesion activa' : 'Sin sesion'}
-                            </span>
-                            <span className="app-navbar__user-name">{displayName}</span>
+                            <Link to="/profile">
+                                <span className="app-navbar__user-name">{displayName}</span>
+                            </Link>
                         </div>
                     </div>
+
                     {activeUser && <span className="app-navbar__divider" aria-hidden="true" />}
+
                     {activeUser && (
                         <motion.button
                             whileTap={{ scale: 0.95 }}
@@ -58,7 +70,7 @@ const Navbar = () => {
                     )}
                 </div>
             </div>
-        </nav>
+        </nav >
     )
 }
 

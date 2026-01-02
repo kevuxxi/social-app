@@ -1,7 +1,18 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { FiTrash2 } from "react-icons/fi"
 import { deletePost } from "../../redux/slices/postsSlice"
+import {
+  getPostId,
+  getPostUserId,
+  getPostUserName,
+  getPostImageUrl,
+  getPostDate,
+  getPostContent
+} from "../../utils/postHelpers"
+import { getRelativeTime } from "../../utils/dateHelpers"
+import ConfirmModal from "../ui/ConfirmModal"
 import "./PostCard.scss"
 
 const PostCard = ({ post }) => {
@@ -9,22 +20,17 @@ const PostCard = ({ post }) => {
   const authUser = useSelector((state) => state.auth.user);
   const { deletingPostId } = useSelector((state) => state.posts)
   const dispatch = useDispatch();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const username = post.user?.username ?? post.username ?? post.user_name
-  const userId = post.user?.id ?? post.user_id
-  const content = post.content
-  const imageUrl = post.image_url
-  const createdAt = post.created_at
-  const postId = post.post_id ?? post.id
+  const username = getPostUserName(post)
+  const userId = getPostUserId(post)
+  const content = getPostContent(post)
+  const imageUrl = getPostImageUrl(post)
+  const createdAt = getPostDate(post)
+  const postId = getPostId(post)
   const author = username || (userId ? `Usuario ${userId}` : "Autor desconocido")
   const avatarLabel = author?.charAt(0)?.toUpperCase() || "U"
-  const formattedDate = createdAt
-    ? new Date(createdAt).toLocaleDateString("es-ES", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    })
-    : "Fecha no disponible"
+  const relativeDate = getRelativeTime(createdAt)
 
   const isDeletingThis = deletingPostId === postId
   const isOwner = authUser && userId && Number(authUser.id) === Number(userId)
@@ -32,11 +38,16 @@ const PostCard = ({ post }) => {
   const handleDeleteClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setShowDeleteModal(true);
+  };
 
-    const confirmed = window.confirm("Eliminar este post?");
-    if (!confirmed) return;
-
+  const handleConfirmDelete = () => {
     dispatch(deletePost({ id: postId }));
+    setShowDeleteModal(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteModal(false);
   };
 
 
@@ -46,12 +57,24 @@ const PostCard = ({ post }) => {
     <Link to={`/post/${postId}`} className="post-card__link">
       <article className="post-card">
         <header className="post-card__header">
-          <div className="post-card__avatar" aria-hidden="true">
-            {avatarLabel}
-          </div>
+          <Link
+            to={`/profile/${userId}`}
+            className="post-card__avatar-link"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="post-card__avatar" aria-hidden="true">
+              {avatarLabel}
+            </div>
+          </Link>
           <div className="post-card__meta">
-            <h3 className="post-card__author">{author}</h3>
-            <span className="post-card__date">{formattedDate}</span>
+            <Link
+              to={`/profile/${userId}`}
+              className="post-card__author-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="post-card__author">{author}</h3>
+            </Link>
+            <span className="post-card__date">{relativeDate}</span>
           </div>
           {isOwner ? (
             <span className="post-card__id">
@@ -82,6 +105,15 @@ const PostCard = ({ post }) => {
           <div className="post-card__status">Activo</div>
         </footer>
       </article>
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        title="¿Eliminar este post?"
+        message="Esta acción no se puede deshacer. El post será eliminado permanentemente."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+      />
     </Link>
   )
 }

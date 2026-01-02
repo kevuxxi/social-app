@@ -63,7 +63,7 @@ const Register = () => {
   useEffect(() => {
     if (token) {
       toast.success("Usuario registrado");
-      navigate("/profile");
+      navigate("/feed");
     }
   }, [token, navigate]);
 

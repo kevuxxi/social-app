@@ -1,4 +1,5 @@
 import { all, call, delay, put, takeLatest } from "redux-saga/effects";
+import { toast } from "react-toastify";
 import {
     fetchPosts as fetchPostsAction,
     setError,
@@ -99,8 +100,10 @@ function* createPost(action) {
         yield call(createPostApi, action.payload)
         yield put(setCreateSuccess(true))
         yield put(fetchPosts({ page: 1, limit: 10 }))
+        toast.success("Post creado")
     } catch (error) {
         yield put(setCreateError(error.message || 'No se pudo crear el post'))
+        toast.error(error.message || "No se pudo crear el post")
     } finally {
         yield put(setCreateLoading(false))
     }
@@ -114,8 +117,10 @@ function* WatchDeletePost(action) {
         yield put(setDeletingPostId(id))
         yield call(deletePost, id)
         yield put(removePostFromList(id))
+        toast.success("Post eliminado")
     } catch (error) {
         yield put(setDeleteError(error.message || 'No se puede borrar el Post'))
+        toast.error(error.message || "No se pudo eliminar el post")
     } finally {
         yield put(setDeleteLoading(false))
         yield put(setDeletingPostId(null))

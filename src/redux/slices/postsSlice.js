@@ -82,6 +82,13 @@ const postsSlice = createSlice({
                 const postId = post?.post_id ?? post?.id;
                 return postId !== idToRemove;
             });
+            // También eliminar de profilePosts.list si existe
+            if (state.profilePosts && state.profilePosts.list && Array.isArray(state.profilePosts.list)) {
+                state.profilePosts.list = state.profilePosts.list.filter((post) => {
+                    const postId = post?.post_id ?? post?.id;
+                    return postId !== idToRemove;
+                });
+            }
         },
         fetchPosts: (state) => state,
         setPosts: (state, action) => {

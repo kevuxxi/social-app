@@ -62,7 +62,7 @@ const Login = () => {
 
     toast.success(`Bienvenido de nuevo, ${user?.name ?? user?.email ?? "usuario"}!`);
     dispatch(fetchUserRequest(authUserId));
-    navigate("/profile");
+    navigate("/feed");
   }, [token, navigate, user, dispatch, authUserId]);
 
   return (

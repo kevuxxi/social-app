@@ -187,34 +187,6 @@
   margin-top: 0.5rem;
 }
 
-.profile-detail__error {
-  padding: 0.85rem 1rem;
-  border-radius: v.$radius-md;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  background: rgba(127, 29, 29, 0.22);
-  color: #fecdd3;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.profile-detail__error button {
-  align-self: flex-start;
-  border: none;
-  background: rgba(239, 68, 68, 0.2);
-  color: #fee2e2;
-  padding: 0.35rem 0.7rem;
-  border-radius: v.$radius-sm;
-  cursor: pointer;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  transition: transform v.$transition-fast, box-shadow v.$transition-fast;
-}
-
-.profile-detail__error button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
-}
 
 .profile-detail__empty-link {
   display: inline-flex;

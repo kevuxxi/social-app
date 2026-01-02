@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { ClipLoader } from "react-spinners"
 import "./PostDetailPage.scss"
 import { useDispatch, useSelector } from "react-redux"
 import { FiTrash2 } from "react-icons/fi"
-import { fetchPostById, clearPostDetail, deletePost } from "../../redux/slices/postsSlice"
+import Loader from "../../components/ui/Loader"
+import ErrorBanner from "../../components/ui/ErrorBanner"
+import ConfirmModal from "../../components/ui/ConfirmModal"
+import { fetchPostById, clearPostDetail, deletePost, setDetailError, setDeleteError } from "../../redux/slices/postsSlice"
+import { getPostId, getPostUserId, getPostUserName, getPostImageUrl, getPostDate, getPostContent } from "../../utils/postHelpers"
+import { getRelativeTime } from "../../utils/dateHelpers"
 
 const PostDetailPage = () => {
     const { id } = useParams();
@@ -14,17 +18,15 @@ const PostDetailPage = () => {
     const { postDetail, detailLoading, detailError, deleteLoading, deleteError, deletingPostId } = useSelector((state) => (state.posts))
     const authUser = useSelector((state) => state.auth.user)
     const [didRequestDelete, setDidRequestDelete] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-    const imageUrl = postDetail?.image_url
-    const postOwnerId = postDetail?.user?.id ?? postDetail?.user_id
+    const imageUrl = getPostImageUrl(postDetail)
+    const postOwnerId = getPostUserId(postDetail)
+    const postUserName = getPostUserName(postDetail)
+    const content = getPostContent(postDetail)
 
-    const formattedDate = postDetail?.created_at
-        ? new Date(postDetail.created_at).toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-        })
-        : "Fecha no disponible"
+    const createdAt = getPostDate(postDetail)
+    const relativeDate = getRelativeTime(createdAt)
 
     useEffect(() => {
         if (!id) return
@@ -48,15 +50,22 @@ const PostDetailPage = () => {
         }
     }, [didRequestDelete, deleteLoading, deleteError, deletingPostId, navigate])
 
-    const postId = postDetail?.post_id ?? postDetail?.id
+    const postId = getPostId(postDetail)
     const isOwner = authUser && postOwnerId && Number(authUser.id) === Number(postOwnerId)
     const isDeletingThis = deletingPostId === postId
 
     const handleDeleteClick = () => {
-        const confirmed = window.confirm("Eliminar este post?");
-        if (!confirmed) return;
+        setShowDeleteModal(true);
+    }
+
+    const handleConfirmDelete = () => {
         setDidRequestDelete(true)
         dispatch(deletePost({ id: postId }))
+        setShowDeleteModal(false);
+    }
+
+    const handleCancelDelete = () => {
+        setShowDeleteModal(false);
     }
 
     if (!postDetail && !detailLoading) {
@@ -76,12 +85,15 @@ const PostDetailPage = () => {
         <div className="page post-detail">
 
             {detailLoading && (
-                <div className="feed-page__loader" aria-live="polite">
-                    <ClipLoader color="#c7d2fe" size={34} />
-                    <p>Cargando...</p>
-                </div>
+                <Loader text="Cargando..." />
             )}
-            {detailError && <p className="create-post__error">{detailError}</p>}
+            {detailError && (
+                <ErrorBanner
+                    title="No se pudo cargar el post"
+                    message={detailError}
+                    onDismiss={() => dispatch(setDetailError(null))}
+                />
+            )}
             <header className="post-detail__header">
                 <Link to="/feed" className="post-detail__back">Volver al feed</Link>
                 <div className="post-detail__titles">
@@ -104,22 +116,33 @@ const PostDetailPage = () => {
                         </div>
                     )}
                     {deleteError && (
-                        <div className="post-detail__delete-error" role="status">
-                            No se pudo eliminar el post: {deleteError}
-                        </div>
+                        <ErrorBanner
+                            title="No se pudo eliminar el post"
+                            message={deleteError}
+                            onDismiss={() => dispatch(setDeleteError(null))}
+                        />
                     )}
-                    {postDetail?.user_name ? (
-                        <div className="post-detail__author">Usuario: {postDetail?.user_name}</div>)
+                    {postUserName ? (
+                        <div className="post-detail__author">Usuario: {postUserName}</div>)
                         : (<p className="post-detail__author">Usuario: anonimo</p>)}
-                    <p className="post-detail__meta">Fecha de publicacion: {formattedDate}</p>
-                    <p className="post-detail__text">{postDetail?.content}</p>
-                    {postDetail?.image_url && (
+                    <p className="post-detail__meta">Fecha de publicacion: {relativeDate}</p>
+                    {content && <p className="post-detail__text">{content}</p>}
+                    {imageUrl && (
                         <div className="post-detail__image">
-                            <img src={imageUrl} alt={`Imagen del post ${postDetail?.id ?? ""}`} loading="lazy" />
+                            <img src={imageUrl} alt={`Imagen del post ${postId ?? ""}`} loading="lazy" />
                         </div>
                     )}
                 </div>
             </main>
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+                title="¿Eliminar este post?"
+                message="Esta acción no se puede deshacer. El post será eliminado permanentemente."
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+            />
         </div>
     )
 }

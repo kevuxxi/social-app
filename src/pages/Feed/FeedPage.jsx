@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Container } from 'react-bootstrap'
-import { ClipLoader } from 'react-spinners'
 import PostList from '../../components/Feed/PostList'
 import CreatePostForm from './CreatePostForm'
+import Loader from '../../components/ui/Loader'
+import ErrorBanner from '../../components/ui/ErrorBanner'
+import ScrollToTop from '../../components/ui/ScrollToTop'
+import PostCardSkeleton from '../../components/ui/PostCardSkeleton'
 import { fetchPosts, setError, setDeleteError } from '../../redux/slices/postsSlice'
 import './FeedPage.scss'
 
@@ -86,45 +89,35 @@ const FeedPage = () => {
             Descubre lo que comparte la comunidad y mantente al d&iacute;a con las &uacute;ltimas novedades.
           </p>
         </div>
-        <div className="feed-page__meta">
-          <span className="feed-page__pill">P&aacute;gina {pagination.page ?? page}</span>
-          <span className="feed-page__pill">{postList.length} posts</span>
-        </div>
       </header>
 
       {error && (
-        <div className="feed-page__alert" role="status">
-          {error}
-        </div>
+        <ErrorBanner
+          title="No se pudieron cargar los posts"
+          message={error}
+          onDismiss={() => dispatch(setError(null))}
+        />
       )}
       {deleteError && (
-        <div className="feed-page__delete-alert" role="status">
-          <span>No se pudo eliminar el post: {deleteError}</span>
-          <button
-            type="button"
-            className="feed-page__delete-dismiss"
-            onClick={() => dispatch(setDeleteError(null))}
-            aria-label="Cerrar alerta"
-          >
-            Cerrar
-          </button>
-        </div>
+        <ErrorBanner
+          title="No se pudo eliminar el post"
+          message={deleteError}
+          onDismiss={() => dispatch(setDeleteError(null))}
+        />
       )}
       <CreatePostForm />
       {loading && !hasPosts ? (
-        <div className="feed-page__loader" aria-live="polite">
-          <ClipLoader color="#c7d2fe" size={34} />
-          <p>Cargando contenido...</p>
+        <div className="feed-page__skeletons">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <PostCardSkeleton key={i} />
+          ))}
         </div>
       ) : hasPosts ? (
         <>
           <PostList posts={postList} />
           <div ref={sentinelRef} />
           {loading && (
-            <div className="feed-page__loader" aria-live="polite">
-              <ClipLoader color="#c7d2fe" size={28} />
-              <p>Cargando m&aacute;s posts...</p>
-            </div>
+            <Loader text="Cargando mas posts..." />
           )}
         </>
       ) : (
@@ -133,6 +126,7 @@ const FeedPage = () => {
           <p>Cuando lleguen las primeras actualizaciones las ver&aacute;s aqu&iacute;.</p>
         </div>
       )}
+      <ScrollToTop />
     </Container>
   )
 }
