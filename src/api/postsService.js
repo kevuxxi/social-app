@@ -55,11 +55,7 @@ export const createPost = async ({ userId, content, imageFile }) => {
         if (imageFile) {
             formData.append('image', imageFile)
         }
-        const response = await axiosInstance.post(`/posts/CreatePost/${userId}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+        const response = await axiosInstance.post(`/posts/CreatePost/${userId}`, formData);
         return response.data;
     } catch (error) {
         console.error('Error al obtener el post:', error);
