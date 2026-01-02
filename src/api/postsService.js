@@ -86,7 +86,6 @@ export const createPost = async ({ userId, content, imageFile }) => {
         throw error;
     }
 }
-
 export const deletePost = async (id) => {
     try {
         if (!id) throw new Error("Post id is required")

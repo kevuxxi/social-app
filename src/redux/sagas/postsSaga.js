@@ -19,9 +19,15 @@ import {
     setDeleteError,
     setDeletingPostId,
     removePostFromList,
-    deletePost as deletePostByID
+    deletePost as deletePostByID,
+    fetchPostsByUser,
+    setProfileError,
+    setProfileLoading,
+    setProfilePosts,
+    setProfileUserId,
+    setProfilePagination,
 } from "../slices/postsSlice";
-import { getPosts, createPost as createPostApi, getPostById, deletePost } from '../../api/postsService'
+import { getPosts, createPost as createPostApi, getPostById, deletePost, getPostByUserId } from '../../api/postsService'
 
 function* fetchPostsSaga(action) {
     yield put(setError(null))
@@ -63,6 +69,30 @@ function* fetchPostById(action) {
     }
 }
 
+function* workerFetchPostsByUser(action) {
+    yield put(setProfileError(null))
+    yield put(setProfileLoading(true))
+    yield put(setProfilePosts([]))
+    try {
+        const { userid, options } = action.payload
+        yield put(setProfileUserId(userid))
+
+        if (!userid) { yield put(setProfileError('Post id required')); return }
+
+        const { posts, pagination } = yield call(getPostByUserId, userid, options)
+
+        if (!posts) { yield put((setProfileError('Posts not found'))); return }
+
+        yield put(setProfilePosts(posts))
+        yield put(setProfilePagination(pagination));
+    } catch (error) {
+        yield put(setProfileError(error.message || "No se pudo obtener los posts"))
+    } finally {
+        yield put(setProfileLoading(false))
+    }
+}
+
+
 function* createPost(action) {
     yield put(setCreateError(null))
     yield put(setCreateSuccess(false))
@@ -101,6 +131,9 @@ function* watchFetchPosts() {
 function* watchFetchPostById() {
     yield takeLatest(fetchPostByIdAction.type, fetchPostById);
 }
+function* watchFetchPostByUserId() {
+    yield takeLatest(fetchPostsByUser.type, workerFetchPostsByUser);
+}
 
 function* watchCreatePost() {
     yield takeLatest(createPostAction.type, createPost)
@@ -115,6 +148,7 @@ export default function* postsSaga() {
         watchFetchPosts(),
         watchFetchPostById(),
         watchCreatePost(),
-        watchDeletePost()
+        watchDeletePost(),
+        watchFetchPostByUserId()
     ]);
 }
