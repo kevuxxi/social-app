@@ -133,6 +133,20 @@ const postsSlice = createSlice({
             state.profilePosts.userId = action.payload
         },
         clearProfilePosts: (state) => {
+            if (!state.profilePosts || Array.isArray(state.profilePosts)) {
+                state.profilePosts = {
+                    list: [],
+                    loading: false,
+                    error: null,
+                    pagination: {
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    },
+                    userId: null
+                }
+                return
+            }
             state.profilePosts.list = []
             state.profilePosts.loading = false
             state.profilePosts.error = null

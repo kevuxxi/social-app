@@ -6,8 +6,8 @@ const PostList = ({ posts = [] }) => {
 
   return (
     <ul className="post-list">
-      {posts.map((post) => (
-        <li key={post.post_id ?? post.id} className="post-list__item">
+      {posts.map((post, index) => (
+        <li key={post.post_id ?? post.id ?? `post-${index}`} className="post-list__item">
           <PostCard post={post} />
         </li>
       ))}

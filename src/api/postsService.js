@@ -49,11 +49,10 @@ export const getPostByUserId = async (userId, { page = 1, limit = 10 } = {}) => 
         const response = await axiosInstance.get(`/posts/postByUserId/${String(userId)}`,
             { params: { page, limit } }
         );
-
         const data = response?.data
         const posts = Array.isArray(data)
             ? data
-            : (data?.posts ?? data?.data ?? [])
+            : (data?.posts ?? data?.data ?? Object.values(data ?? {}))
         const apiPagination = data?.pagination
         const pagination = {
             page: apiPagination?.page ?? page,

@@ -74,14 +74,12 @@ function* workerFetchPostsByUser(action) {
     yield put(setProfileLoading(true))
     yield put(setProfilePosts([]))
     try {
-        const { userid, options } = action.payload
-        yield put(setProfileUserId(userid))
+        const { userId, page = 1, limit = 10 } = action.payload
 
-        if (!userid) { yield put(setProfileError('Post id required')); return }
+        if (!userId) { yield put(setProfileError('userId is required')); return }
 
-        const { posts, pagination } = yield call(getPostByUserId, userid, options)
-
-        if (!posts) { yield put((setProfileError('Posts not found'))); return }
+        yield put(setProfileUserId(userId))
+        const { posts, pagination } = yield call(getPostByUserId, userId, { page, limit })
 
         yield put(setProfilePosts(posts))
         yield put(setProfilePagination(pagination));
