@@ -1,5 +1,4 @@
 import { all, call, delay, put, takeLatest } from "redux-saga/effects";
-import { DELETE_POST } from "./constants";
 import {
     fetchPosts as fetchPostsAction,
     setError,
@@ -15,9 +14,14 @@ import {
     setDetailError,
     setDetailLoading,
     setPostDetail,
-    fetchPostById as fetchPostByIdAction
+    fetchPostById as fetchPostByIdAction,
+    setDeleteLoading,
+    setDeleteError,
+    setDeletingPostId,
+    removePostFromList,
+    deletePost as deletePostByID
 } from "../slices/postsSlice";
-import { getPosts, createPost as createPostApi, getPostById } from '../../api/postsService'
+import { getPosts, createPost as createPostApi, getPostById, deletePost } from '../../api/postsService'
 
 function* fetchPostsSaga(action) {
     yield put(setError(null))
@@ -74,14 +78,21 @@ function* createPost(action) {
     }
 }
 
-function* deletePost(action) {
+function* WatchDeletePost(action) {
+    yield put(setDeleteLoading(true))
+    yield put(setDeleteError(null))
     try {
-
+        const { id } = action.payload || {}
+        yield put(setDeletingPostId(id))
+        yield call(deletePost, id)
+        yield put(removePostFromList(id))
     } catch (error) {
-
+        yield put(setDeleteError(error.message || 'No se puede borrar el Post'))
+    } finally {
+        yield put(setDeleteLoading(false))
+        yield put(setDeletingPostId(null))
     }
 }
-
 
 function* watchFetchPosts() {
     yield takeLatest(fetchPostsAction.type, fetchPostsSaga);
@@ -96,7 +107,7 @@ function* watchCreatePost() {
 }
 
 function* watchDeletePost() {
-    yield takeLatest(DELETE_POST, deletePost);
+    yield takeLatest(deletePostByID.type, WatchDeletePost);
 }
 
 export default function* postsSaga() {

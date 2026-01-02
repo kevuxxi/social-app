@@ -1,6 +1,4 @@
 ﻿import axiosInstance from "./axiosInstance";
-
-
 /*   const posts = {
              id: postsData.post_id,
              userid: postsData.user_id,
@@ -9,9 +7,6 @@
              createdAt: postsData.created_at,
              modifiedAt: postsData.modified_at
          } */
-
-
-
 export const getPosts = async ({ page = 1, limit = 10 } = {}) => {
     try {
         const response = await axiosInstance.get(`/posts/allpost`, {
