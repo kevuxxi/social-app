@@ -1,11 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    user: null,
-    token: null,
-    loading: false,
-    error: null
-}
+const initialState = (() => {
+    let token = null
+    let user = null
+    try {
+        token = sessionStorage.getItem("token")
+        const rawUser = sessionStorage.getItem("user")
+        user = rawUser ? JSON.parse(rawUser) : null
+    } catch {
+        token = null
+        user = null
+    }
+    return {
+        user,
+        token,
+        loading: false,
+        error: null
+    }
+})()
 
 const authSlice = createSlice({
     name: 'auth',

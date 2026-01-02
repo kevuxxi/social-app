@@ -30,11 +30,13 @@ function* handleLogin(action) {
         yield put(loginSuccess({ token, user }))
 
         if (token) {
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
         }
         if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("user", JSON.stringify(user));
         }
+        yield call([localStorage, 'removeItem'], "token");
+        yield call([localStorage, 'removeItem'], "user");
     } catch (error) {
         yield put(loginFailure(error.message || "Error al intentar iniciar sesión"));
     }
@@ -55,11 +57,13 @@ function* handleRegister(action) {
         };
 
         if (token) {
-            localStorage.setItem("token", token);
+            sessionStorage.setItem("token", token);
         }
         if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("user", JSON.stringify(user));
         }
+        yield call([localStorage, 'removeItem'], "token");
+        yield call([localStorage, 'removeItem'], "user");
         yield put(registerSuccess({ token, user }));
     } catch (error) {
         yield put(registerFailure(error.message || "Respuesta inválida del servidor"));
@@ -67,6 +71,8 @@ function* handleRegister(action) {
 }
 
 function* handleLogout() {
+    yield call([sessionStorage, 'removeItem'], "token");
+    yield call([sessionStorage, 'removeItem'], "user");
     yield call([localStorage, 'removeItem'], "token");
     yield call([localStorage, 'removeItem'], "user");
 }
