@@ -12,6 +12,13 @@
   gap: 0.6rem;
 }
 
+.profile-detail__header-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .profile-detail__back {
   align-self: flex-start;
   padding: 0.5rem 0.9rem;
@@ -168,6 +175,18 @@
   gap: 0.75rem;
 }
 
+.profile-detail__posts-heading {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #cbd5f5;
+}
+
+.profile-detail__state {
+  margin-top: 0.5rem;
+}
+
 .profile-detail__error {
   padding: 0.85rem 1rem;
   border-radius: v.$radius-md;
@@ -195,6 +214,34 @@
 .profile-detail__error button:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
+}
+
+.profile-detail__empty-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: v.$radius-sm;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #e2e8f0;
+  padding: 0.35rem 0.7rem;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(15, 23, 42, 0.4);
+  transition: transform v.$transition-fast, box-shadow v.$transition-fast, border-color v.$transition-fast;
+}
+
+.profile-detail__empty-link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(129, 140, 248, 0.6);
+  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+}
+
+@media (max-width: 540px) {
+  .profile-detail__header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .profile-detail__posts-title {

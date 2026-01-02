@@ -33,8 +33,10 @@ const ProfilePage = () => {
     return (
         <section className="page profile-detail">
             <header className="profile-detail__header">
-                <Link to="/feed" className="profile-detail__back">Volver al feed</Link>
-                <h1 className="profile-detail__title">Perfil de usuario</h1>
+                <div className="profile-detail__header-top">
+                    <Link to="/feed" className="profile-detail__back">Volver al feed</Link>
+                    <h1 className="profile-detail__title">Perfil de usuario</h1>
+                </div>
             </header>
             <main className="profile-detail__content">
                 <ProfileHeader
@@ -46,7 +48,7 @@ const ProfilePage = () => {
                 />
                 <section className="profile-detail__posts">
                     {loading && !hasPosts ? (
-                        <div className="feed-page__loader" aria-live="polite">
+                        <div className="feed-page__loader profile-detail__state" aria-live="polite">
                             <ClipLoader color="#c7d2fe" size={34} />
                             <p>Cargando contenido...</p>
                         </div>
@@ -60,16 +62,17 @@ const ProfilePage = () => {
                         <>
                             <PostList posts={list} />
                             {loading && (
-                                <div className="feed-page__loader" aria-live="polite">
+                                <div className="feed-page__loader profile-detail__state" aria-live="polite">
                                     <ClipLoader color="#c7d2fe" size={28} />
                                     <p>Cargando mas posts...</p>
                                 </div>
                             )}
                         </>
                     ) : (
-                        <div className="feed-page__empty">
+                        <div className="feed-page__empty profile-detail__state">
                             <h2>Sin publicaciones aun</h2>
                             <p>Cuando lleguen las primeras actualizaciones las veras aqui.</p>
+                            <Link to="/feed" className="profile-detail__empty-link">Volver al feed</Link>
                         </div>
                     )}
                 </section>

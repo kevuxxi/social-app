@@ -41,9 +41,6 @@ const Navbar = () => {
                                 {activeUser ? 'Sesion activa' : 'Sin sesion'}
                             </span>
                             <span className="app-navbar__user-name">{displayName}</span>
-                            {displayEmail && (
-                                <span className="app-navbar__user-email">{displayEmail}</span>
-                            )}
                         </div>
                     </div>
                     {activeUser && <span className="app-navbar__divider" aria-hidden="true" />}
