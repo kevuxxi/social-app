@@ -17,8 +17,10 @@ const initialState = {
     createSuccess: false,
     postDetail: null,
     detailLoading: false,
-    detailError: null
-
+    detailError: null,
+    deleteLoading: false,
+    deleteError: null,
+    deletingPostId: null
 }
 
 const postsSlice = createSlice({
@@ -49,6 +51,26 @@ const postsSlice = createSlice({
             state.detailLoading = false
             state.detailError = null
             state.postDetail = null
+        },
+        deletePost: (state) => state,
+        setDeleteLoading: (state, action) => {
+            state.deleteLoading = action.payload
+        },
+        setDeleteError: (state, action) => {
+            state.deleteError = action.payload
+        },
+        setDeletingPostId: (state, action) => {
+            state.deletingPostId = action.payload
+        },
+        removePostFromList: (state, action) => {
+            if (!state.posts || Array.isArray(state.posts)) {
+                state.posts = { list: [] };
+            }
+            const idToRemove = action.payload;
+            state.posts.list = state.posts.list.filter((post) => {
+                const postId = post?.post_id ?? post?.id;
+                return postId !== idToRemove;
+            });
         },
         fetchPosts: (state) => state,
         setPosts: (state, action) => {
@@ -87,6 +109,9 @@ const postsSlice = createSlice({
             state.createSuccess = false
             state.detailLoading = false
             state.detailError = null
+            state.deleteLoading = false
+            state.deleteError = null
+            state.deletingPostId = null
         })
     }
 
@@ -107,7 +132,12 @@ export const {
     fetchPostById,
     setDetailLoading,
     setDetailError,
-    clearPostDetail
+    clearPostDetail,
+    deletePost,
+    setDeleteLoading,
+    setDeleteError,
+    setDeletingPostId,
+    removePostFromList
 } = postsSlice.actions;
 
 
