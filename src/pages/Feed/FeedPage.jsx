@@ -4,11 +4,11 @@ import { Container } from 'react-bootstrap'
 import { ClipLoader } from 'react-spinners'
 import PostList from '../../components/Feed/PostList'
 import CreatePostForm from './CreatePostForm'
-import { fetchPosts, setError } from '../../redux/slices/postsSlice'
+import { fetchPosts, setError, setDeleteError } from '../../redux/slices/postsSlice'
 import './FeedPage.scss'
 
 const FeedPage = () => {
-  const { posts, loading, error, pagination } = useSelector((state) => state.posts)
+  const { posts, loading, error, pagination, deleteError } = useSelector((state) => state.posts)
   const dispatch = useDispatch()
   const postList = Array.isArray(posts) ? posts : posts?.list ?? []
   const [page, setPage] = useState(1)
@@ -95,6 +95,19 @@ const FeedPage = () => {
       {error && (
         <div className="feed-page__alert" role="status">
           {error}
+        </div>
+      )}
+      {deleteError && (
+        <div className="feed-page__delete-alert" role="status">
+          <span>No se pudo eliminar el post: {deleteError}</span>
+          <button
+            type="button"
+            className="feed-page__delete-dismiss"
+            onClick={() => dispatch(setDeleteError(null))}
+            aria-label="Cerrar alerta"
+          >
+            Cerrar
+          </button>
         </div>
       )}
       <CreatePostForm />

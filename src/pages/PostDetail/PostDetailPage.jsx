@@ -103,6 +103,11 @@ const PostDetailPage = () => {
                             </button>
                         </div>
                     )}
+                    {deleteError && (
+                        <div className="post-detail__delete-error" role="status">
+                            No se pudo eliminar el post: {deleteError}
+                        </div>
+                    )}
                     {postDetail?.user_name ? (
                         <div className="post-detail__author">Usuario: {postDetail?.user_name}</div>)
                         : (<p className="post-detail__author">Usuario: anonimo</p>)}
