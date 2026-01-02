@@ -42,6 +42,35 @@ export const getPostById = async (post_id) => {
         throw error;
     }
 }
+export const getPostByUserId = async (userId, { page = 1, limit = 10 } = {}) => {
+    try {
+        if (!userId) throw new Error('userId is required')
+
+        const response = await axiosInstance.get(`/posts/postByUserId/${String(userId)}`,
+            { params: { page, limit } }
+        );
+
+        const data = response?.data
+        const posts = Array.isArray(data)
+            ? data
+            : (data?.posts ?? data?.data ?? [])
+        const apiPagination = data?.pagination
+        const pagination = {
+            page: apiPagination?.page ?? page,
+            limit: apiPagination?.limit ?? limit,
+            total: typeof apiPagination?.total === 'number' ? apiPagination.total : posts.length
+        }
+
+        return { posts, pagination }
+    } catch (error) {
+        const message = error?.response?.data?.message
+            ?? error?.response?.data?.error
+            ?? error?.message
+            ?? "Unable to fetch user posts"
+        console.error('Error al obtener el post:', error);
+        throw new Error(message);
+    }
+}
 
 export const createPost = async ({ userId, content, imageFile }) => {
     try {
