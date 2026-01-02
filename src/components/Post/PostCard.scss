@@ -67,6 +67,34 @@
     border: 1px solid rgba(99, 102, 241, 0.3);
   }
 
+  &__delete {
+    border: none;
+    background: rgba(30, 41, 59, 0.45);
+    color: #fecdd3;
+    padding: 0.35rem;
+    width: 28px;
+    height: 28px;
+    border-radius: v.$radius-sm;
+    cursor: pointer;
+    transition: transform v.$transition-fast, box-shadow v.$transition-fast, border-color v.$transition-fast;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__delete:hover {
+    border-color: rgba(248, 113, 113, 0.8);
+    box-shadow: 0 8px 18px rgba(248, 113, 113, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &__delete:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
   &__image {
     border-radius: v.$radius-md;
     overflow: hidden;

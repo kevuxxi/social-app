@@ -1,17 +1,22 @@
-import { Link } from "react-router-dom"
-import { useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { ClipLoader } from "react-spinners"
 import "./PostDetailPage.scss"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchPostById, clearPostDetail } from "../../redux/slices/postsSlice"
+import { FiTrash2 } from "react-icons/fi"
+import { fetchPostById, clearPostDetail, deletePost } from "../../redux/slices/postsSlice"
 
 const PostDetailPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { postDetail, detailLoading, detailError } = useSelector((state) => (state.posts))
+    const navigate = useNavigate();
+    const { postDetail, detailLoading, detailError, deleteLoading, deleteError, deletingPostId } = useSelector((state) => (state.posts))
+    const authUser = useSelector((state) => state.auth.user)
+    const [didRequestDelete, setDidRequestDelete] = useState(false)
 
     const imageUrl = postDetail?.image_url
+    const postOwnerId = postDetail?.user?.id ?? postDetail?.user_id
 
     const formattedDate = postDetail?.created_at
         ? new Date(postDetail.created_at).toLocaleDateString("es-ES", {
@@ -29,6 +34,30 @@ const PostDetailPage = () => {
         }
 
     }, [id, dispatch])
+
+    useEffect(() => {
+        if (!didRequestDelete) return
+        if (deleteLoading) return
+        if (deleteError) {
+            setDidRequestDelete(false)
+            return
+        }
+        if (!deletingPostId) {
+            setDidRequestDelete(false)
+            navigate("/feed")
+        }
+    }, [didRequestDelete, deleteLoading, deleteError, deletingPostId, navigate])
+
+    const postId = postDetail?.post_id ?? postDetail?.id
+    const isOwner = authUser && postOwnerId && Number(authUser.id) === Number(postOwnerId)
+    const isDeletingThis = deletingPostId === postId
+
+    const handleDeleteClick = () => {
+        const confirmed = window.confirm("Eliminar este post?");
+        if (!confirmed) return;
+        setDidRequestDelete(true)
+        dispatch(deletePost({ id: postId }))
+    }
 
     if (!postDetail && !detailLoading) {
         return (
@@ -60,6 +89,20 @@ const PostDetailPage = () => {
             </header>
             <main className="post-detail__content">
                 <div className="post-detail__card">
+                    {isOwner && (
+                        <div className="post-detail__actions">
+                            <button
+                                type="button"
+                                className="post-detail__delete"
+                                onClick={handleDeleteClick}
+                                disabled={isDeletingThis}
+                                aria-label="Eliminar post"
+                                title="Eliminar post"
+                            >
+                                <FiTrash2 size={16} />
+                            </button>
+                        </div>
+                    )}
                     {postDetail?.user_name ? (
                         <div className="post-detail__author">Usuario: {postDetail?.user_name}</div>)
                         : (<p className="post-detail__author">Usuario: anonimo</p>)}

@@ -37,6 +37,12 @@
   gap: 0.35rem;
 }
 
+.post-detail__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.25rem;
+}
+
 .post-detail__title {
   margin: 0;
   font-family: v.$font-family-heading;
@@ -98,4 +104,30 @@
   text-align: center;
   color: #cbd5f5;
   font-size: 0.95rem;
+}
+
+.post-detail__delete {
+  border: none;
+  background: rgba(30, 41, 59, 0.45);
+  color: #fecdd3;
+  width: 28px;
+  height: 28px;
+  border-radius: v.$radius-sm;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform v.$transition-fast, box-shadow v.$transition-fast;
+}
+
+.post-detail__delete:hover {
+  box-shadow: 0 8px 18px rgba(248, 113, 113, 0.25);
+  transform: translateY(-1px);
+}
+
+.post-detail__delete:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }

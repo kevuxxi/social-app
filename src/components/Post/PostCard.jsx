@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { FiTrash2 } from "react-icons/fi"
+import { deletePost } from "../../redux/slices/postsSlice"
 import "./PostCard.scss"
 
 
 const PostCard = ({ post }) => {
   if (!post) return null
   const authUser = useSelector((state) => state.auth.user);
-
+  const { deletingPostId } = useSelector((state) => state.posts)
+  const dispatch = useDispatch();
 
   const username = post.user?.username ?? post.username ?? post.user_name
   const userId = post.user?.id ?? post.user_id
@@ -25,12 +28,17 @@ const PostCard = ({ post }) => {
     })
     : "Fecha no disponible"
 
+  const isDeletingThis = deletingPostId === postId
   const isOwner = authUser && userId && Number(authUser.id) === Number(userId)
 
   const handleDeleteClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // dispatch delete...
+
+    const confirmed = window.confirm("Eliminar este post?");
+    if (!confirmed) return;
+
+    dispatch(deletePost({ id: postId }));
   };
 
 
@@ -48,7 +56,18 @@ const PostCard = ({ post }) => {
             <span className="post-card__date">{formattedDate}</span>
           </div>
           {isOwner ? (
-            <span className="post-card__id"><button onClick={handleDeleteClick}>Delete</button></span>) :
+            <span className="post-card__id">
+              <button
+                type="button"
+                className="post-card__delete"
+                disabled={isDeletingThis}
+                onClick={handleDeleteClick}
+                aria-label="Eliminar post"
+                title="Eliminar post"
+              >
+                <FiTrash2 size={16} />
+              </button>
+            </span>) :
             (<span className="post-card__id">#{postId}</span>)}
         </header>
 
