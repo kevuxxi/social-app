@@ -4,7 +4,6 @@ import { FiTrash2 } from "react-icons/fi"
 import { deletePost } from "../../redux/slices/postsSlice"
 import "./PostCard.scss"
 
-
 const PostCard = ({ post }) => {
   if (!post) return null
   const authUser = useSelector((state) => state.auth.user);
@@ -17,7 +16,6 @@ const PostCard = ({ post }) => {
   const imageUrl = post.image_url
   const createdAt = post.created_at
   const postId = post.post_id ?? post.id
-
   const author = username || (userId ? `Usuario ${userId}` : "Autor desconocido")
   const avatarLabel = author?.charAt(0)?.toUpperCase() || "U"
   const formattedDate = createdAt

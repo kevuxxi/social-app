@@ -5,8 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "react-toastify/dist/ReactToastify.css";
 import Register from './pages/Register';
 import Login from './pages/Login';
+import ProfilePage from './pages/profile/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
-import Profile from './pages/Profile';
+import Profile from './pages/profile/Profile';
 import Navbar from './components/Navbar'
 import { useSelector } from 'react-redux';
 import LandingPage from './pages/LandingPage';
@@ -29,6 +30,10 @@ function App() {
               <Route path='/profile' element={
                 <PrivateRoute>
                   <Profile />
+                </PrivateRoute>} />
+              <Route path='/profile/:id' element={
+                <PrivateRoute>
+                  <ProfilePage />
                 </PrivateRoute>} />
               <Route path='/feed' element={
                 <PrivateRoute>

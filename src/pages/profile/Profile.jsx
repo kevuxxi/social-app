@@ -1,12 +1,12 @@
 import { Container, Button, Badge } from 'react-bootstrap';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../redux/slices/authSlice';
+import { logout } from '../../redux/slices/authSlice';
 import { useEffect } from 'react';
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import { FiLogOut } from 'react-icons/fi';
-import { fetchUserRequest } from '../redux/slices/usersSlice';
+import { fetchUserRequest } from '../../redux/slices/usersSlice';
 
 const Profile = () => {
     const navigate = useNavigate();
