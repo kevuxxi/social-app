@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 import "./PostCard.scss"
 
 
 const PostCard = ({ post }) => {
   if (!post) return null
+  const authUser = useSelector((state) => state.auth.user);
+
 
   const username = post.user?.username ?? post.username ?? post.user_name
   const userId = post.user?.id ?? post.user_id
@@ -22,6 +25,15 @@ const PostCard = ({ post }) => {
     })
     : "Fecha no disponible"
 
+  const isOwner = authUser && userId && Number(authUser.id) === Number(userId)
+
+  const handleDeleteClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // dispatch delete...
+  };
+
+
   if (!postId) return null
 
   return (
@@ -35,7 +47,9 @@ const PostCard = ({ post }) => {
             <h3 className="post-card__author">{author}</h3>
             <span className="post-card__date">{formattedDate}</span>
           </div>
-          {postId && <span className="post-card__id">#{postId}</span>}
+          {isOwner ? (
+            <span className="post-card__id"><button onClick={handleDeleteClick}>Delete</button></span>) :
+            (<span className="post-card__id">#{postId}</span>)}
         </header>
 
         {imageUrl && (
