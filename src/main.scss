@@ -458,7 +458,7 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: clamp(1rem, 3vw, 1.5rem) clamp(1.25rem, 4vw, 2rem);
+    padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 3vw, 2rem);
     background: transparent;
 
     &__content {
@@ -467,11 +467,11 @@ body {
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        padding: 0.85rem 1.5rem;
+        padding: 0.85rem 1.25rem;
         border-radius: v.$radius-lg;
-        border: 1px solid rgba(99, 102, 241, 0.25);
-        background: rgba(4, 7, 20, 0.85);
-        box-shadow: 0 25px 60px rgba(2, 6, 23, 0.65);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        background: linear-gradient(175deg, rgba(10, 14, 30, 0.95), rgba(3, 6, 17, 0.92));
+        box-shadow: 0 20px 50px rgba(3, 7, 18, 0.55);
         backdrop-filter: blur(18px);
         position: relative;
         overflow: hidden;
@@ -516,25 +516,32 @@ body {
     &__actions {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.35rem;
+    }
+
+    &__divider {
+        width: 1px;
+        height: 36px;
+        background: rgba(148, 163, 184, 0.3);
+        border-radius: 999px;
     }
 
     &__profile {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.5rem 0.9rem;
-        background: rgba(15, 23, 42, 0.65);
+        padding: 0.6rem 1.05rem;
+        background: rgba(15, 23, 42, 0.6);
         border-radius: v.$radius-md;
         border: 1px solid rgba(99, 102, 241, 0.25);
-        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
         min-width: 0;
         backdrop-filter: blur(12px);
     }
 
     &__avatar {
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         border-radius: v.$radius-md;
         background: linear-gradient(135deg, v.$color-primary-600, v.$color-primary-500);
         color: #ffffff;
@@ -542,6 +549,8 @@ body {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: 0 10px 22px rgba(99, 102, 241, 0.35);
     }
 
     &__user {
@@ -553,13 +562,14 @@ body {
 
     &__user-label {
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-size: 0.7rem;
-        color: #94a3b8;
+        letter-spacing: 0.16em;
+        font-size: 0.62rem;
+        color: rgba(199, 210, 254, 0.7);
     }
 
     &__user-name {
         font-weight: 600;
+        font-size: 1rem;
         color: #f8fafc;
         line-height: 1.2;
         white-space: nowrap;
@@ -569,8 +579,8 @@ body {
     }
 
     &__user-email {
-        font-size: 0.85rem;
-        color: #cbd5f5;
+        font-size: 0.8rem;
+        color: #94a3b8;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -605,6 +615,23 @@ body {
     }
 }
 
+.auth-card__footer {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.auth-card__link {
+    color: #c7d2fe;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: color v.$transition-fast;
+}
+
+.auth-card__link:hover {
+    color: #eef2ff;
+}
+
 @media (max-width: 640px) {
     .app-navbar {
         position: static;
@@ -615,11 +642,15 @@ body {
             align-items: stretch;
         }
 
-        &__actions {
-            width: 100%;
-            flex-direction: column;
-            align-items: stretch;
-        }
+    &__actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    &__divider {
+        display: none;
+    }
 
         &__profile {
             width: 100%;

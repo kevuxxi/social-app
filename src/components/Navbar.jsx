@@ -46,6 +46,7 @@ const Navbar = () => {
                             )}
                         </div>
                     </div>
+                    {activeUser && <span className="app-navbar__divider" aria-hidden="true" />}
                     {activeUser && (
                         <motion.button
                             whileTap={{ scale: 0.95 }}

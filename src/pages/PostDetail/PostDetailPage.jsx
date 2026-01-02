@@ -33,27 +33,28 @@ const PostDetailPage = () => {
     if (!postDetail && !detailLoading) {
         return (
             <div>
-                <p>Post not found</p>
+                <header className="post-detail__header">
+                    <Link to="/feed" className="post-detail__back">Volver al feed</Link>
+                    <div className="post-detail__titles">
+                    </div>
+                </header>
+                <p>Post no encontrado</p>
             </div>
         )
     }
 
     return (
         <div className="page post-detail">
-            {!postDetail && (
-                <div >
-                    <p>Post not found</p>
-                </div>
-            )}
+
             {detailLoading && (
                 <div className="feed-page__loader" aria-live="polite">
                     <ClipLoader color="#c7d2fe" size={34} />
                     <p>Cargando...</p>
                 </div>
             )}
-            {detailError && <p className="create-post__error">{createError}</p>}
+            {detailError && <p className="create-post__error">{detailError}</p>}
             <header className="post-detail__header">
-                <Link to="/feed" className="post-detail__back">Back to feed</Link>
+                <Link to="/feed" className="post-detail__back">Volver al feed</Link>
                 <div className="post-detail__titles">
                 </div>
             </header>

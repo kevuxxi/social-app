@@ -1,19 +1,17 @@
 import { Container, Button, Badge } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import { useEffect } from 'react';
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import { FiLogOut } from 'react-icons/fi';
 import { fetchUserRequest } from '../redux/slices/usersSlice';
-import { Navigate } from "react-router-dom";
 
 const Profile = () => {
     const navigate = useNavigate();
-    const { currentUser, loading, error } = useSelector((state) => state.users)
-    const authUser = useSelector((state) => state.auth.user)
+    const { currentUser, loading, error } = useSelector((state) => state.users);
+    const authUser = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
 
     const formatDate = (dateString) => {
@@ -34,16 +32,16 @@ const Profile = () => {
     useEffect(() => {
         if (!authUser?.id) return;
 
-        dispatch(fetchUserRequest(authUser.id))
-    }, [authUser?.id, dispatch])
+        dispatch(fetchUserRequest(authUser.id));
+    }, [authUser?.id, dispatch]);
 
     if (!authUser?.id) {
-        return <Navigate to="/login" replace />
+        return <Navigate to="/login" replace />;
     }
 
     const handleLogout = () => {
         dispatch(logout());
-        toast.success('Sesión cerrada correctamente')
+        toast.success('Sesion cerrada correctamente');
         navigate('/login');
     };
 
@@ -51,11 +49,10 @@ const Profile = () => {
         <Container className="page profile-page">
             {loading ? (
                 <div className="profile-card">
-                    <ClipLoader
-                        color="#FFFFFF"
-                        size={20}
-                    />
-                </div>) : (<div className="profile-card">
+                    <ClipLoader color="#FFFFFF" size={20} />
+                </div>
+            ) : (
+                <div className="profile-card">
                     <div className="profile-card__header">
                         <div className="profile-card__avatar">
                             <span className="profile-card__avatar-text">
@@ -92,11 +89,11 @@ const Profile = () => {
                             onClick={handleLogout}
                         >
                             <FiLogOut size={18} />
-                            Cerrar sesión
+                            Cerrar sesion
                         </Button>
-
                     </div>
-                </div>)}
+                </div>
+            )}
         </Container>
     );
 };

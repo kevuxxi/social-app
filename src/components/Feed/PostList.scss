@@ -3,10 +3,11 @@
 .post-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 640px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: 1fr;
+  gap: clamp(1rem, 2vw, 1.75rem);
   align-items: stretch;
 
   &__item {

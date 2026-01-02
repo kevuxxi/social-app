@@ -80,12 +80,9 @@
 
 .post-detail__image {
   border-radius: v.$radius-md;
-  border: 1px dashed rgba(129, 140, 248, 0.35);
-  background: rgba(6, 9, 22, 0.65);
-  color: #cbd5f5;
-  padding: 0;
-  text-align: center;
   overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.55);
 }
 
 .post-detail__image img {
@@ -96,6 +93,9 @@
 }
 
 .post-detail__image--empty {
+  border-style: dashed;
   padding: 1.5rem;
+  text-align: center;
+  color: #cbd5f5;
   font-size: 0.95rem;
 }
