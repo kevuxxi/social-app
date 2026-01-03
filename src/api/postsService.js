@@ -50,9 +50,15 @@ export const getPostByUserId = async (userId, { page = 1, limit = 10 } = {}) => 
             { params: { page, limit } }
         );
         const data = response?.data
-        const posts = Array.isArray(data)
+        let posts = Array.isArray(data)
             ? data
             : (data?.posts ?? data?.data ?? Object.values(data ?? {}))
+
+        // Filtrar solo objetos válidos de posts (excluir strings como "message")
+        if (!Array.isArray(data) && !data?.posts && !data?.data) {
+            posts = posts.filter(item => typeof item === 'object' && item !== null && item.post_id)
+        }
+
         const apiPagination = data?.pagination
         const pagination = {
             page: apiPagination?.page ?? page,

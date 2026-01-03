@@ -75,7 +75,7 @@ const Register = () => {
             <h1 className="register-card__title">Crear cuenta</h1>
             <Form onSubmit={handleSubmit} className="register-form">
               <Form.Group className="mb-3" controlId="formBasicUsername">
-                <Form.Label className="form-label">Usuario</Form.Label>
+                <Form.Label className="form-label">Username</Form.Label>
                 <Form.Control
                   className="register-form__input"
                   onChange={(e) => setUsername(e.target.value)}

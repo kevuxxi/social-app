@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { FiTrash2 } from "react-icons/fi"
 import { deletePost } from "../../redux/slices/postsSlice"
@@ -17,6 +17,7 @@ import "./PostCard.scss"
 
 const PostCard = ({ post }) => {
   if (!post) return null
+  const navigate = useNavigate();
   const authUser = useSelector((state) => state.auth.user);
   const { deletingPostId } = useSelector((state) => state.posts)
   const dispatch = useDispatch();
@@ -50,17 +51,23 @@ const PostCard = ({ post }) => {
     setShowDeleteModal(false);
   };
 
+  const handleCardClick = (e) => {
+    // No navegar si se hizo clic en un link o botón
+    if (e.target.closest('a') || e.target.closest('button')) {
+      return;
+    }
+    navigate(`/post/${postId}`);
+  };
 
   if (!postId) return null
 
   return (
-    <Link to={`/post/${postId}`} className="post-card__link">
-      <article className="post-card">
+    <>
+      <article className="post-card post-card__link" onClick={handleCardClick}>
         <header className="post-card__header">
           <Link
             to={`/profile/${userId}`}
             className="post-card__avatar-link"
-            onClick={(e) => e.stopPropagation()}
           >
             <div className="post-card__avatar" aria-hidden="true">
               {avatarLabel}
@@ -70,7 +77,6 @@ const PostCard = ({ post }) => {
             <Link
               to={`/profile/${userId}`}
               className="post-card__author-link"
-              onClick={(e) => e.stopPropagation()}
             >
               <h3 className="post-card__author">{author}</h3>
             </Link>
@@ -114,7 +120,7 @@ const PostCard = ({ post }) => {
         confirmText="Eliminar"
         cancelText="Cancelar"
       />
-    </Link>
+    </>
   )
 }
 
