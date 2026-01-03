@@ -37,24 +37,28 @@ axiosInstance.interceptors.response.use(
         };
 
         if (error.response) {
+            const backendMessage = error.response.data?.message || error.response.data?.error || error.response.data?.msg;
             switch (error.response.status) {
                 case 400:
-                    customError.message = "Solicitud incorrecta (400).";
+                    customError.message = backendMessage || "Solicitud incorrecta (400).";
                     break;
                 case 401:
-                    customError.message = "No autorizado (401). Inicia sesión nuevamente.";
+                    customError.message = backendMessage || "No autorizado (401). Inicia sesiA3n nuevamente.";
                     break;
                 case 403:
-                    customError.message = "Acceso denegado (403).";
+                    customError.message = backendMessage || "Acceso denegado (403).";
                     break;
                 case 404:
-                    customError.message = "Recurso no encontrado (404).";
+                    customError.message = backendMessage || "Recurso no encontrado (404).";
+                    break;
+                case 409:
+                    customError.message = backendMessage || "Conflicto (409).";
                     break;
                 case 500:
-                    customError.message = "Error interno del servidor (500).";
+                    customError.message = backendMessage || "Error interno del servidor (500).";
                     break;
                 default:
-                    customError.message = error.response.data?.message || customError.message;
+                    customError.message = backendMessage || customError.message;
             }
         }
 

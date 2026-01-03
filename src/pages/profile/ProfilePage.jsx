@@ -7,25 +7,38 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../../components/ui/Loader'
 import ErrorBanner from '../../components/ui/ErrorBanner'
 import { clearProfilePosts, fetchPostsByUser, setProfileError } from '../../redux/slices/postsSlice'
-import { getPostUserName } from '../../utils/postHelpers'
+import { fetchProfileUser, clearProfileUser } from '../../redux/slices/usersSlice'
+import { getPostUserName, getPostUserId } from '../../utils/postHelpers'
 import './ProfilePage.scss'
 
 const ProfilePage = () => {
     const { id: profileUserId } = useParams();
     const dispatch = useDispatch();
-    const { list, error, loading } = useSelector((state) => state.posts.profilePosts);
+    const { list, error, loading, pagination } = useSelector((state) => state.posts.profilePosts);
+    const profileUser = useSelector((state) => state.users?.profileUser);
     const page = 1
     const limit = 10
     const hasPosts = Array.isArray(list) && list.length > 0
-    const profileUserName = getPostUserName(list?.[0])
+    const profileUserData = profileUser?.data
+    const isProfileMatch = profileUserData?.id && String(profileUserData.id) === String(profileUserId)
+    const firstPostUserId = getPostUserId(list?.[0])
+    const isPostUserMatch = firstPostUserId && String(firstPostUserId) === String(profileUserId)
+    const profileUserName = isProfileMatch
+        ? profileUserData?.username
+        : (isPostUserMatch ? getPostUserName(list?.[0]) : null)
+    const headerLoading = profileUser?.loading || (!profileUserData && !profileUser?.error)
+    const postsCount = pagination?.total ?? 0
 
 
     useEffect(() => {
         if (!profileUserId) return
         dispatch(clearProfilePosts())
+        dispatch(clearProfileUser())
+        dispatch(fetchProfileUser(profileUserId))
         dispatch(fetchPostsByUser({ userId: profileUserId, page, limit }))
         return () => {
             dispatch(clearProfilePosts())
+            dispatch(clearProfileUser())
         }
     }, [dispatch, profileUserId, page, limit])
 
@@ -44,9 +57,9 @@ const ProfilePage = () => {
                 <ProfileHeader
                     profileId={profileUserId}
                     userName={profileUserName}
-                    postsCount={list?.length ?? 0}
-                    loading={loading}
-                    error={error}
+                    postsCount={postsCount}
+                    loading={headerLoading}
+                    error={profileUser?.error}
                 />
                 <section className="profile-detail__posts">
                     {loading && !hasPosts ? (

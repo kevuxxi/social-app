@@ -25,9 +25,15 @@ const postsPersistConfig = {
     ]
 }
 
+const usersPersistConfig = {
+    key: 'users',
+    storage,
+    blacklist: ['profileUser']
+}
+
 const rootReducer = combineReducers({
     auth: authReducer,
-    users: usersReducer,
+    users: persistReducer(usersPersistConfig, usersReducer),
     posts: persistReducer(postsPersistConfig, postsReducer)
 })
 
