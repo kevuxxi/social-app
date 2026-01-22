@@ -14,6 +14,7 @@ import {
 import { getRelativeTime } from "../../utils/dateHelpers"
 import ConfirmModal from "../ui/ConfirmModal"
 import "./PostCard.scss"
+import PostActions from "./PostActions"
 
 const PostCard = ({ post }) => {
   if (!post) return null
@@ -108,7 +109,7 @@ const PostCard = ({ post }) => {
 
         <footer className="post-card__footer">
           <div className="post-card__tag">Comunidad</div>
-          <div className="post-card__status">Activo</div>
+          <PostActions postId={postId} />
         </footer>
       </article>
       <ConfirmModal

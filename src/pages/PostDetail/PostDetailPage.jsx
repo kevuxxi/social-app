@@ -10,6 +10,7 @@ import ConfirmModal from "../../components/ui/ConfirmModal"
 import { fetchPostById, clearPostDetail, deletePost, setDetailError, setDeleteError } from "../../redux/slices/postsSlice"
 import { getPostId, getPostUserId, getPostUserName, getPostImageUrl, getPostDate, getPostContent } from "../../utils/postHelpers"
 import { getRelativeTime } from "../../utils/dateHelpers"
+import PostActions from "../../components/Post/PostActions"
 
 const PostDetailPage = () => {
     const { id } = useParams();
@@ -156,6 +157,10 @@ const PostDetailPage = () => {
                     )}
                 </div>
             </main>
+            <footer className="post-card__footer">
+                <div className="post-card__tag">Comunidad</div>
+                <PostActions postId={postId} />
+            </footer>
             <ConfirmModal
                 isOpen={showDeleteModal}
                 onConfirm={handleConfirmDelete}
