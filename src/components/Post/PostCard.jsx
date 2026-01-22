@@ -109,7 +109,7 @@ const PostCard = ({ post }) => {
 
         <footer className="post-card__footer">
           <div className="post-card__tag">Comunidad</div>
-          <PostActions postId={postId} />
+          <PostActions postId={postId} userId={authUser?.id} />
         </footer>
       </article>
       <ConfirmModal

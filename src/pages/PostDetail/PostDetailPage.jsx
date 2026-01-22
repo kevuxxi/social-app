@@ -159,7 +159,7 @@ const PostDetailPage = () => {
             </main>
             <footer className="post-card__footer">
                 <div className="post-card__tag">Comunidad</div>
-                <PostActions postId={postId} />
+                <PostActions postId={postId} userId={authUser?.id} />
             </footer>
             <ConfirmModal
                 isOpen={showDeleteModal}
