@@ -1,13 +1,22 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { FiHeart } from "react-icons/fi"
 import { selectReactionState } from "../../redux/selectors";
 import "./PostActions.scss"
-import { toggleLikeRequested } from "../../redux/slices/reactionsSlice";
+import { fetchPostReactionsRequested, toggleLikeRequested } from "../../redux/slices/reactionsSlice";
 
 const PostActions = ({ postId, userId }) => {
     const { likeCount, likedByMe, loading, error } = useSelector(selectReactionState(postId));
+    const reactionEntry = useSelector((state) => state.reactions?.byPostId?.[postId]);
     const isDisabled = !postId || !userId || loading
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (!postId) return
+        if (reactionEntry?.loading) return
+        if (reactionEntry) return
+        dispatch(fetchPostReactionsRequested(postId))
+    }, [dispatch, postId, reactionEntry])
 
     const handleLikeClick = () => {
         if (loading || !userId) return
