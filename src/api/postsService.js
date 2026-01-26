@@ -68,6 +68,16 @@ export const getPostByUserId = async (userId, { page = 1, limit = 10 } = {}) => 
 
         return { posts, pagination }
     } catch (error) {
+        if (error?.response?.status === 404 || error?.status === 404) {
+            return {
+                posts: [],
+                pagination: {
+                    page,
+                    limit,
+                    total: 0
+                }
+            }
+        }
         const message = error?.response?.data?.message
             ?? error?.response?.data?.error
             ?? error?.message

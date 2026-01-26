@@ -155,12 +155,12 @@ const PostDetailPage = () => {
                             <img src={imageUrl} alt={`Imagen del post ${postId ?? ""}`} loading="lazy" />
                         </div>
                     )}
+                    <footer className="post-detail__footer">
+                        <div className="post-detail__tag">Comunidad</div>
+                        <PostActions postId={postId} userId={authUser?.id} />
+                    </footer>
                 </div>
             </main>
-            <footer className="post-card__footer">
-                <div className="post-card__tag">Comunidad</div>
-                <PostActions postId={postId} userId={authUser?.id} />
-            </footer>
             <ConfirmModal
                 isOpen={showDeleteModal}
                 onConfirm={handleConfirmDelete}

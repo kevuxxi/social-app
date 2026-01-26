@@ -2,11 +2,21 @@ export const selectUserId = (state) => state.auth?.user?.id ?? null;
 
 export const selectReactionState = (postId) => (state) =>
     state.reactions?.byPostId?.[postId] ?? {
-        likeCount: 0,
-        likedByMe: false,
+        reactionCounts: {},
+        totalCount: 0,
+        myReactionType: null,
         loading: false,
         error: null
     };
+
+export const selectReactionCounts = (postId) => (state) =>
+    state.reactions?.byPostId?.[postId]?.reactionCounts ?? {};
+
+export const selectTotalReactionCount = (postId) => (state) =>
+    state.reactions?.byPostId?.[postId]?.totalCount ?? 0;
+
+export const selectMyReactionType = (postId) => (state) =>
+    state.reactions?.byPostId?.[postId]?.myReactionType ?? null;
 
 export const selectCommentsState = (postId) => (state) =>
     state.comments?.byPostId?.[postId] ?? {

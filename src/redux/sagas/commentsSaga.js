@@ -1,4 +1,4 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from "redux-saga/effects";
 import {
     fetchCommentsRequested,
     fetchCommentsSucceeded,
@@ -9,8 +9,11 @@ import {
     addCommentFailed
 } from "../slices/commentsSlice";
 import { addComment, readComments } from "../../api/commentsApi";
+import { getUserReactionInComment } from "../../api/reactionsApi";
 
 const resolvePostId = (payload) => payload?.postId ?? payload;
+const resolveCommentId = (comment) =>
+    comment?.comment_id ?? comment?.id ?? comment?._id ?? comment?.comment?.id ?? null;
 
 const normalizeComment = (comment, fallback) => {
     const source = comment?.comment ?? comment?.data ?? comment ?? {};
@@ -31,7 +34,31 @@ function* workerFetchComments(action) {
     }
     try {
         const comments = yield call(readComments, postId);
-        yield put(fetchCommentsSucceeded({ postId, items: comments }));
+        const userId = yield select((state) => state.auth?.user?.id ?? null);
+
+        if (!userId || !Array.isArray(comments) || comments.length === 0) {
+            yield put(fetchCommentsSucceeded({ postId, items: comments }));
+            return;
+        }
+
+        const reactions = yield all(
+            comments.map((comment) => {
+                const commentId = resolveCommentId(comment);
+                if (!commentId) return null;
+                return call(getUserReactionInComment, userId, commentId);
+            })
+        );
+
+        const items = comments.map((comment, index) => {
+            const reaction = reactions[index];
+            const reactionType = reaction?.reaction ?? null;
+            return {
+                ...comment,
+                myReactionType: reactionType ? String(reactionType).toUpperCase() : null
+            };
+        });
+
+        yield put(fetchCommentsSucceeded({ postId, items }));
     } catch (error) {
         yield put(fetchCommentsFailed({ postId, error: error.message }));
     }
