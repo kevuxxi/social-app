@@ -10,6 +10,7 @@ import ConfirmModal from "../../components/ui/ConfirmModal"
 import { fetchPostById, clearPostDetail, deletePost, setDetailError, setDeleteError } from "../../redux/slices/postsSlice"
 import { getPostId, getPostUserId, getPostUserName, getPostImageUrl, getPostDate, getPostContent } from "../../utils/postHelpers"
 import { getRelativeTime } from "../../utils/dateHelpers"
+import PostActions from "../../components/Post/PostActions"
 
 const PostDetailPage = () => {
     const { id } = useParams();
@@ -154,6 +155,10 @@ const PostDetailPage = () => {
                             <img src={imageUrl} alt={`Imagen del post ${postId ?? ""}`} loading="lazy" />
                         </div>
                     )}
+                    <footer className="post-detail__footer">
+                        <div className="post-detail__tag">Comunidad</div>
+                        <PostActions postId={postId} userId={authUser?.id} />
+                    </footer>
                 </div>
             </main>
             <ConfirmModal

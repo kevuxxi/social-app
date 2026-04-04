@@ -7,6 +7,10 @@ import rootSaga from "./rootSaga";
 import authReducer from '../redux/slices/authSlice'
 import usersReducer from '../redux/slices/usersSlice'
 import postsReducer from '../redux/slices/postsSlice'
+import commentsReducer from '../redux/slices/commentsSlice'
+import reactionsReducer from '../redux/slices/reactionsSlice'
+import followsReducer from '../redux/slices/followsSlice'
+import feedReducer from '../redux/slices/feedSlice'
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -34,7 +38,11 @@ const usersPersistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     users: persistReducer(usersPersistConfig, usersReducer),
-    posts: persistReducer(postsPersistConfig, postsReducer)
+    posts: persistReducer(postsPersistConfig, postsReducer),
+    comments: commentsReducer,
+    reactions: reactionsReducer,
+    follows: followsReducer,
+    feed: feedReducer
 })
 
 const persistConfig = {

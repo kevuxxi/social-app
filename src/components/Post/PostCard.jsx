@@ -14,14 +14,16 @@ import {
 import { getRelativeTime } from "../../utils/dateHelpers"
 import ConfirmModal from "../ui/ConfirmModal"
 import "./PostCard.scss"
+import PostActions from "./PostActions"
 
 const PostCard = ({ post }) => {
-  if (!post) return null
   const navigate = useNavigate();
   const authUser = useSelector((state) => state.auth.user);
   const { deletingPostId } = useSelector((state) => state.posts)
   const dispatch = useDispatch();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  if (!post) return null
 
   const username = getPostUserName(post)
   const userId = getPostUserId(post)
@@ -107,8 +109,7 @@ const PostCard = ({ post }) => {
         {content && <p className="post-card__content">{content}</p>}
 
         <footer className="post-card__footer">
-          <div className="post-card__tag">Comunidad</div>
-          <div className="post-card__status">Activo</div>
+          <PostActions postId={postId} userId={authUser?.id} />
         </footer>
       </article>
       <ConfirmModal
